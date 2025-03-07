@@ -9,13 +9,13 @@ public class E6_2_a {
 
         int[] arr = new int[n];
         int i;
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < arr.length; i++) {
             System.out.println("enter array elements");
             arr[i] = scanner.nextInt();
         }
 
         int max = arr[0], min = arr[0];
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < args.length; i++) {
             if (arr[i] > max) max = arr[i];
             if (arr[i] < min) min = arr[i];
         }
