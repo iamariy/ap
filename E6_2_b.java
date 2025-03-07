@@ -22,7 +22,7 @@ public class E6_2_b {
            if(arr[i]%2==0) coun1++;
            if(arr[i]%2!=0) count2++;
         }
-        System.out.println("enen count is"+ coun1);
+        System.out.println("even count is"+ coun1);
         System.out.println("odd count is"+ count2);
     }
 }
