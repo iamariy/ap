@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 import java.util.Random;
 
 
-public class Main_EX2_PM_3_1_A {
+public class Main_EX2_PM_3_1_B {
 
     public static class PacmanGUI extends JFrame implements KeyListener {
 
@@ -125,7 +125,11 @@ public class Main_EX2_PM_3_1_A {
         }
 
         private void handleCrossBorder() {
-            //
+            if (pacmanPoint.x<0) pacmanPoint.x=0;
+            else if (pacmanPoint.x>=width/boxSize) pacmanPoint.x=(width/boxSize)-1;
+
+            if (pacmanPoint.y<0) pacmanPoint.y=0;
+            else if (pacmanPoint.y>=height/boxSize) pacmanPoint.y=(height/boxSize)-1;
         }
 
 
