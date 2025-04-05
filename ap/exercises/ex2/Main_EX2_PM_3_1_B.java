@@ -122,6 +122,7 @@ public class Main_EX2_PM_3_1_B {
 
         @Override
         public void keyReleased(KeyEvent e) {
+
         }
 
         private void handleCrossBorder() {
