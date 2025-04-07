@@ -4,32 +4,34 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class Main_EX3_LM_1_2_A {
-    public static void main(String[] args) {
+    public static void  main(String[] args) {
         String str1=CreatingFileB();
         String str2=CreatingFileS();
 
-        Scanner scanner=new Scanner(System.in);
-        int n=4;
-        String[] arr1=new String[n];
-
-        int m=3;
-        String[] arr2=new String[m];
-
-        for (int i=0;i<n;i++)
+        Book[] books=new Book[4];
+        books[0]=new Book("Cosette","Victor Hugo",582,1862);
+        books[1]=new Book("Anna Shirley","Lucy Maund Montgomery",3544,1908);
+        books[2]=new Book("Le Petir Prince","Antoine de Saint-Exupery",103,1944);
+        books[3]=new Book("The Forty Rules of Love","Elif Safak",511,2010);
+        for (int i=0;i< books.length;i++)
         {
-            System.out.println("enter arr1 "+ (i+1) +":");
-            arr1[i]=scanner.nextLine();
+            System.out.println(books[i].toString());
+
         }
-        WriteToFileB(arr1,str1);
-        for (int j=0;j<m;j++)
+
+        Student[] students=new Student[3];
+        students[0]=new Student("Maryam","Rezaei","Computer",763435);
+        students[1]=new Student("Sama","Zolfkhani","Computer",478432);
+        students[2]=new Student("Neda","Rashtchi","Computer",964532);
+        for (int j=0;j< books.length;j++)
         {
-            System.out.println("enter arr2 "+ (j+1) +":");
-            arr2[j]=scanner.nextLine();
+            System.out.println(students[j].toString());
         }
-        WriteToFileS(arr2,str2);
+
+        WriteToFileB(books,str1);
+        WriteToFileS(students,str2);
     }
 
     public static String CreatingFileB()
@@ -47,13 +49,13 @@ public class Main_EX3_LM_1_2_A {
         } else System.out.println("Created the file before.");
         return filepath;
     }
-    public static void WriteToFileB(String[] arr1, String filepath1)
+    public static void WriteToFileB(Book[] books, String filepath1)
     {
         try (BufferedWriter writer=new BufferedWriter(new FileWriter(filepath1)))
         {
-            for (int i=0;i< arr1.length;i++)
+            for (int i=0;i< books.length;i++)
             {
-                writer.write(arr1[i]);
+                writer.write(books[i].toString());
                 writer.newLine();
             }
             System.out.println("Book saved successfully!");
@@ -80,13 +82,13 @@ public class Main_EX3_LM_1_2_A {
         } else System.out.println("Created the file before.");
         return filepath;
     }
-    public static void WriteToFileS( String[] arr2,String filepath2 )
+    public static void WriteToFileS(Student[] students, String filepath2 )
     {
         try (BufferedWriter writer=new BufferedWriter(new FileWriter(filepath2)))
         {
-            for (int j=0;j< arr2.length;j++)
+            for (int j=0;j< students.length;j++)
             {
-                writer.write(arr2[j]);
+                writer.write(students[j].toString());
                 writer.newLine();
             }
             System.out.println("Student saved successfully!");
@@ -95,6 +97,77 @@ public class Main_EX3_LM_1_2_A {
         {
             System.out.println("Error to saving file.");
             e.printStackTrace();
+        }
+    }
+    static class Book
+    {
+        String bookname;
+        String authornam;
+        int counter;
+        int year;
+
+        public Book(String bookname,String authornam,int counter,int year)
+        {
+            this.bookname=bookname;
+            this.authornam=authornam;
+            this.counter=counter;
+            this.year=year;
+        }
+
+        public String toString()
+        {
+            return bookname +","+ authornam +","+ counter +","+ year;
+        }
+
+        public void setBookName(String bookName)
+        {
+            this.bookname = bookName;
+        }
+        public void setAuthorName(String authorName)
+        {
+            this.authornam = authorName;
+        }
+        public void setCounter(int counter)
+        {
+            this.counter = counter;
+        }
+        public void setYear(int year)
+        {
+            this.year = year;
+        }
+    }
+    static class Student {
+        String firstname;
+        String lastname;
+        String major;
+        int id;
+
+        public Student(String firstname, String lastname, String major, int id) {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.major = major;
+            this.id = id;
+        }
+
+        public String toString()
+        {
+            return firstname +","+ lastname +","+ major +","+ id;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstname = firstName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastname = lastName;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public void setMajor(String major) {
+            this.major = major;
         }
     }
 }
