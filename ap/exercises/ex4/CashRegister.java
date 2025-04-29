@@ -24,7 +24,7 @@ public class CashRegister {
             double price=part.get(i);
             prices=prices.concat(String.valueOf("part"+ (i+1) +":"+ price +"\n"));
         }
-        prices=prices.concat(String.valueOf("total:"+ getTotal()));
+        prices=prices.concat(String.valueOf("total :"+ getTotal()));
         System.out.println(prices);
     }
 }
