@@ -1,13 +1,13 @@
 package ap.exercises.ex4;
 
-public class CircuitTester {
+public class Main_EX4_E3_5 {
     public static void main(String[] args)
     {
         for (int s1=0;s1<=1;s1++)
         {
             for (int s2=0;s2<=1;s2++)
             {
-                E3_4 circuit=new E3_4();
+                Main_EX4_E3_4 circuit=new Main_EX4_E3_4();
                 if (s1==1) circuit.toggleFirstSwitch();
                 if (s2==1) circuit.toggleSecondSwitch();
 
