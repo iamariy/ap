@@ -1,10 +1,10 @@
 package ap.exercises.ex4;
 
-public class E3_6 {
+public class Main_EX4_E3_6 {
     private int[] switches;
     private int lamp;
 
-    public E3_6(){
+    public Main_EX4_E3_6(){
         switches=new int[2];
         updatelamp();
     }
