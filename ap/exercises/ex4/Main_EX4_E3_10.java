@@ -2,10 +2,10 @@ package ap.exercises.ex4;
 
 import java.util.ArrayList;
 
-public class CashRegister {
+public class Main_EX4_E3_10 {
     private ArrayList<Double> part;
 
-    public CashRegister(){
+    public Main_EX4_E3_10(){
         part=new ArrayList<Double>();
     }
     public void add(double price){
