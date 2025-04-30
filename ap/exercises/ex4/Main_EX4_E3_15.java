@@ -1,11 +1,11 @@
 package ap.exercises.ex4;
 
-public class Letter {
+public class Main_EX4_E3_15 {
     private String from;
     private String to;
     private String body;
 
-    public Letter(String from,String to){
+    public Main_EX4_E3_15(String from, String to){
         this.from=from;
         this.to=to;
         this.body="";
@@ -21,10 +21,9 @@ public class Letter {
         text=text.concat(from);
         return text;
     }
-}
-class LetterPrinter{
+
     public static void main(String[] args){
-        Letter letter=new Letter("Marry","John");
+        Main_EX4_E3_15 letter=new Main_EX4_E3_15("Marry","John");
 
         letter.addLine("I am sorry we must part.");
         letter.addLine("I wish you all the best.");
