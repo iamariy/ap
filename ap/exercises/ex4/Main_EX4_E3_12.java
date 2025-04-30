@@ -1,10 +1,10 @@
 package ap.exercises.ex4;
 
-public class Employee {
+public class Main_EX4_E3_12 {
     private String name;
     private double salary;
 
-    public Employee(String name,double salary){
+    public Main_EX4_E3_12(String name, double salary){
         this.name=name;
         this.salary=salary;
     }
@@ -17,10 +17,9 @@ public class Employee {
     public void raiseSalary(double byPercent){
         salary+=salary*(byPercent/100);
     }
-}
-class EmployeeTester{
+
     public static void main(String[] args){
-        Employee harry = new Employee("Hacker, Harry", 50000);
+        Main_EX4_E3_12 harry = new Main_EX4_E3_12("Hacker, Harry", 50000);
         System.out.println("Name:"+ harry.getName() +"\nSalary:"+ harry.getSalary());
 
         harry.raiseSalary(10);
