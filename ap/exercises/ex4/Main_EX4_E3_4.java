@@ -1,12 +1,12 @@
 package ap.exercises.ex4;
 
-public class E3_4 {
+public class Main_EX4_E3_4 {
 
         private int switch1;
         private int switch2;
         private int lamp;
 
-        public E3_4()
+        public Main_EX4_E3_4()
         {
             this.switch1=0;
             this.switch2=0;
@@ -39,7 +39,7 @@ public class E3_4 {
         }
     public static void main(String[] args)
     {
-        E3_4 light=new E3_4();
+        Main_EX4_E3_4 light=new Main_EX4_E3_4();
         print(light);
         light.toggleFirstSwitch();
         print(light);
@@ -47,7 +47,7 @@ public class E3_4 {
         print(light);
 
     }
-        public static void print(E3_4 light)
+        public static void print(Main_EX4_E3_4 light)
         {
             System.out.println("First Switch:"+ light.getFirstSwitchState()+"\nSecond Switch:"+ light.getSecondSwitchState() +"\nLamp:"+ (light.getLampState()==1?"on":"off"));
         }
