@@ -1,3 +1,5 @@
+package shop;
+
 public class Pen {
     private String color;
     private String brand;

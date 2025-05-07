@@ -1,3 +1,5 @@
+package shop;
+
 import java.util.ArrayList;
 
 public class Main1 {
@@ -17,10 +19,10 @@ public class Main1 {
         books.add(b1);
         books.add(b2);
         for (Book b : books){
-            System.out.println("Book:\nName is:"+b.getName()+"\nPrice is:"+b.getPrice());
+            System.out.println("shop.Book:\nName is:"+b.getName()+"\nPrice is:"+b.getPrice());
         }
         for (Pen p : pens){
-            System.out.println("Pen:\nColor is:"+p.getColor()+"\nBrand is:"+p.getBrand()+"\nPrice is"+p.getPrice());
+            System.out.println("shop.Pen:\nColor is:"+p.getColor()+"\nBrand is:"+p.getBrand()+"\nPrice is"+p.getPrice());
         }
     }
 }

@@ -1,3 +1,5 @@
+package shop;
+
 public class Book {
     private String name;
     private double price;
