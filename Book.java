@@ -1,16 +1,18 @@
-import java.util.ArrayList;
-
 public class Book {
     private String name;
     private double price;
+
     public Book(String name,double price){
-        this.name="";
+        this.name=name;
         this.price=price;
     }
-    public String getName(String name){
+    public String getName(){
         return name;
     }
-    public double getPrice(double price){
+    public double getPrice(){
         return price;
+    }
+    public void raiseSalary(double percent){
+        price-=price*(percent/100);
     }
 }

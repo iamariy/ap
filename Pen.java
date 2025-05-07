@@ -2,18 +2,25 @@ public class Pen {
     private String color;
     private String brand;
     private double price;
-    public Pen(String color,String brand,double price){
-        this.color="";
-        this.brand="";
-        this.price=price;
+
+    public Pen(String color, String brand, double price) {
+        this.color = color;
+        this.brand = brand;
+        this.price = price;
     }
-    public String getColor(String color){
+
+    public String getColor() {
         return color;
     }
-    public String getBrand(String brand){
+
+    public String getBrand() {
         return brand;
     }
-    public double getPrice(double price){
+
+    public double getPrice() {
         return price;
+    }
+    public void raiseSalary(double percent){
+        price-=price*(percent/100);
     }
 }
