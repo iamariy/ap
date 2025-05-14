@@ -13,17 +13,9 @@ public class Librarian extends Person {
         this.password=password;
     }
 
-    public String getFirstname(){
-        return firstname;
-    }
-    public String getLastname(){
-        return lastname;
-    }
+
     public String getPassword(){
         return password;
-    }
-    public int getId(){
-        return id;
     }
 
     public boolean logIn(int id,String password){

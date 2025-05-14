@@ -20,9 +20,7 @@ public class Manager extends Person {
     public String getEducation(){
         return education;
     }
-    public int getId(){
-        return id;
-    }
+
     public void addLibraian(Library library,String firstname,String lastname,String password,int id){
         Librarian librarian=new Librarian(firstname,lastname,password,id);
         library.addLibrarian(librarian);

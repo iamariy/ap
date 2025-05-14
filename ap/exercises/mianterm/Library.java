@@ -14,6 +14,9 @@ public class Library {
         System.out.println("Lbrarians are added");
     }
 
+    public ArrayList<Librarian> getLibrarians() {
+        return librarians;
+    }
 
     ArrayList<Book> books=new ArrayList<>();
     public void addBook(Book book){
@@ -52,5 +55,8 @@ public class Library {
         students.add(student);
         System.out.println("Student registered successfully!");
         return true;
+    }
+    public ArrayList<Student> getStudents() {
+        return students;
     }
 }

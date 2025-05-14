@@ -1,5 +1,6 @@
 package ap.exercises.mianterm;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Menu {
@@ -11,6 +12,25 @@ public class Menu {
     private Book book;
     private Manager manager;
 
+    public void setInput(Input input){
+        this.input= Objects.requireNonNull(input,"Input can,t be null");
+    }
+    public void setLibrarySystem(LibrarySystem librarySystem) {
+        this.librarySystem = Objects.requireNonNull(librarySystem, "LibrarySystem cannot be null");
+    }
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+    public void setLibrary(Library library) {
+        this.library = Objects.requireNonNull(library, "Library cannot be null");
+    }
+    public void setLibrarian(Librarian librarian) {
+        this.librarian = librarian;
+    }
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
+
     public void showMenu(){
         System.out.println("1.Enter student");
         System.out.println("2.Enter librarian");
@@ -21,13 +41,13 @@ public class Menu {
 
         switch (choice){
             case 1:
-                librarySystem.loginStudent(input.inputInteger(),input.inputString());
+                librarySystem.loginStudent(input.inputIntegerId(),input.inputStringPassword());
                 break;
             case 2:
-                librarySystem.loginLibrarian(input.inputInteger(),input.inputString());
+                librarySystem.loginLibrarian(input.inputIntegerId(),input.inputStringPassword());
                 break;
             case 3:
-                librarySystem.loginManager(input.inputInteger(),input.inputString());
+                librarySystem.loginManager(input.inputIntegerId(),input.inputStringPassword());
                 break;
             case 4:
                 System.out.println("Exit");
@@ -48,13 +68,13 @@ public class Menu {
 
         switch (choice){
             case 1:
-                library.registerStudent(input.inputString(),input.inputString(),input.inputString(),input.inputString(),input.inputInteger());
+                library.registerStudent(input.inputStringNmae(),input.inputStringLast(),input.inputStringMajor(),input.inputStringPassword(),input.inputIntegerId());
                 break;
             case 2:
-                student.searchingBookByName(library,input.inputString());
+                student.searchingBookByName(library,input.inputStringNmae());
                 break;
             case 3:
-                student.serchingBookByAuthor(library,input.inputString());
+                student.serchingBookByAuthor(library,input.inputStringAuthor());
                 break;
             case 4:
                 librarySystem.logoutStudent();
@@ -75,16 +95,16 @@ public class Menu {
 
         switch (choice){
             case 1:
-                librarian.setFirstname(input.inputString());
+                librarian.setFirstname(input.inputStringNmae());
                 break;
             case 2:
-                librarian.setLastname(input.inputString());
+                librarian.setLastname(input.inputStringLast());
                 break;
             case 3:
-                librarian.setPassword(input.inputString());
+                librarian.setPassword(input.inputStringPassword());
                 break;
             case 4:
-                librarian.addBook(library,input.inputString(),input.inputString(),input.inputInteger(),input.inputInteger());
+                librarian.addBook(library,input.inputStringNmae(),input.inputStringAuthor(),input.inputIntegerYear(),input.inputIntegerPage());
                 break;
             case 5:
                 librarySystem.logoutLibrarian();
@@ -102,7 +122,7 @@ public class Menu {
 
         switch (choice){
             case 1:
-                manager.addLibraian(library,input.inputString(),input.inputString(),input.inputString(),input.inputInteger());
+                manager.addLibraian(library,input.inputStringNmae(),input.inputStringLast(),input.inputStringPassword(),input.inputIntegerId());
                 break;
             case 2:
                 librarySystem.logoutManager();

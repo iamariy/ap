@@ -18,12 +18,7 @@ public class Student extends Person {
         this.date=LocalDate.now();
         this.password=password;
     }
-    public String getFirstname(){
-        return firstname;
-    }
-    public String getLastname(){
-        return lastname;
-    }
+
     public String getMajor(){
         return major;
     }
@@ -33,12 +28,14 @@ public class Student extends Person {
     public String getPassword(){
         return password;
     }
-    public int getId(){
-        return id;
-    }
+
     @Override
     public String toString(){
         return firstname +","+ lastname +","+ major +","+ date +","+ password +","+ id;
+    }
+
+    public boolean logIn(int id, String password) {
+        return this.getId() == id && Objects.equals(this.password, password);
     }
 
     public void searchingBookByName(Library library,String name){
