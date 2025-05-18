@@ -28,9 +28,10 @@ public class Book {
     }
     @Override
     public String toString(){
-        return name +","+ author +","+ year +","+ pagecounter;
+        return getName() +","+
+                getAuthor()+","+ getYear() +","+ getPagecounter();
     }
     public void print(){
-        System.out.println("Name:" +name+ "author:" +author+ "year:" +year+ "pagecounter:" +pagecounter);
+        System.out.println("Name:" +getName()+ "\tauthor:" +getAuthor()+ "\tyear:" +getYear()+ "\tpagecounter:" +getPagecounter());
     }
 }

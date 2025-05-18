@@ -2,23 +2,59 @@ package ap.exercises.mianterm;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Objects;
 
 public class Library {
+    private LibraryData libraryData;
+
     String libraryName="Znu Library";
 
-    ArrayList<Librarian> librarians=new ArrayList<>();
-    public  void addLibrarian(Librarian librarian) {
+        ArrayList<Librarian> librarians;
+    ArrayList<Student> students;
+    ArrayList<Book> books;
+
+
+    public Library() {
+        this.libraryData = new LibraryData();
+        this.books = libraryData.loadBooks();
+        this.books=new ArrayList<>();
+        this.librarians = new ArrayList<>();
+        this.students = new ArrayList<>();
+    }
+
+
+
+    public void addLibrarian(Librarian librarian) {
+        if (librarians == null) {
+            librarians = new ArrayList<>();
+        }
         librarians.add(librarian);
-        System.out.println("Lbrarians are added");
+        System.out.println("Librarian added successfully");
+        libraryData.saveLibrarians(librarians); // ذخیره مستقیم
     }
 
     public ArrayList<Librarian> getLibrarians() {
         return librarians;
     }
+    public ArrayList<Book> getBooks(){
+        return books;
+    }
 
-    ArrayList<Book> books=new ArrayList<>();
+    public void setBooks(ArrayList<Book> books) {
+        this.books = books;
+        libraryData.saveBooks(books);
+    }
+
+    public void setLibrarians(ArrayList<Librarian> librarians) {
+        this.librarians = librarians;
+        libraryData.saveLibrarians(librarians);
+    }
+
+    public void setStudents(ArrayList<Student> students) {
+        this.students = students;
+        libraryData.saveStudents(students);
+    }
+
     public void addBook(Book book){
         books.add(book);
         System.out.println("Books are added");
@@ -27,8 +63,9 @@ public class Library {
     public ArrayList<Book> searchByName(String name) {
         ArrayList<Book> result=new ArrayList<>();
         for (Book book : books){
-            if (book.getName().toLowerCase().contains(name.toLowerCase()));
-            result.add(book);
+            if (book.getName().toLowerCase().contains(name.toLowerCase())) {
+                result.add(book);
+            }
         }
         return result;
     }
@@ -36,14 +73,14 @@ public class Library {
     public ArrayList<Book> searchByAuthor(String author){
         ArrayList<Book> result=new ArrayList<>();
         for (Book book : books){
-            if (book.getAuthor().toLowerCase().contains(author.toLowerCase()));
-            result.add(book);
+            if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) {
+                result.add(book);
+            }
         }
         return result;
     }
 
-    ArrayList<Student> students=new ArrayList<>();
-    public boolean registerStudent(String firstname, String lastname, String major, String password,int id){
+    public boolean registerStudent(String firstname, String lastname, String major, String password,LocalDate date,int id){
         for (Student s : students){
             if (Objects.equals(s.getId(), id)){
                 System.out.println("Student is registered before!");
@@ -51,7 +88,7 @@ public class Library {
             }
         }
 
-        Student student=new Student(firstname,lastname,major,password,id);
+        Student student=new Student(firstname,lastname,major,password, id, date);
         students.add(student);
         System.out.println("Student registered successfully!");
         return true;

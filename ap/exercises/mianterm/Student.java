@@ -5,18 +5,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Student extends Person {
-    private String firstname;
-    private String lastname;
     private String major;
     private String password;
     private LocalDate date;
-    private int id;
 
-    public Student(String firstname, String lastname, String major, String password, int id){
+    public Student(String firstname, String lastname, String major, String password, int id,LocalDate date){
         super(firstname,lastname,id);
         this.major=major;
-        this.date=LocalDate.now();
         this.password=password;
+        this.date=date;
     }
 
     public String getMajor(){
@@ -31,7 +28,13 @@ public class Student extends Person {
 
     @Override
     public String toString(){
-        return firstname +","+ lastname +","+ major +","+ date +","+ password +","+ id;
+        return super.getFirstname() +","+ super.getLastname() +","+ getMajor() +","+ getDate() +","+ getPassword() +","+ super.getId();
+    }
+    public void print(){
+        System.out.println("firstname:"+ super.getFirstname() +"\tlastname:"+ super.getLastname() +"\tmajor:"+ getMajor() +"\tregister date:"+ getDate() +"\tpassword:"+ getPassword() +"\tid:"+ getId());
+    }
+    public LocalDate getRegistrationDate() {
+        return date;
     }
 
     public boolean logIn(int id, String password) {
@@ -50,7 +53,8 @@ public class Student extends Person {
             }
         }
     }
-    public void serchingBookByAuthor(Library library,String author){
+
+    public void searchingBookByAuthor(Library library, String author) {
         ArrayList<Book> found2=new ArrayList<>();
         found2=library.searchByAuthor(author);
         if (found2.isEmpty()){

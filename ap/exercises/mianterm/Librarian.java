@@ -3,10 +3,9 @@ package ap.exercises.mianterm;
 import java.util.Objects;
 
 public class Librarian extends Person {
-    private String firstname;
-    private String lastname;
+
     private String password;
-    private int id;
+
 
     public Librarian(String firstname,String lastname,String password,int id){
         super(firstname,lastname,id);
@@ -32,8 +31,18 @@ public class Librarian extends Person {
         if (!password.isEmpty()) this.password=password;
     }
 
-    public void addBook(Library library,String name,String author,int year,int pagecounter){
+    public Book addBook(Library library,String name,String author,int year,int pagecounter){
         Book book=new Book(name,author,year,pagecounter);
         library.addBook(book);
+        library.setBooks(library.getBooks());
+        return book;
+    }
+
+    @Override
+    public String toString(){
+        return super.getFirstname() +","+ super.getLastname() +","+ getPassword() +","+ getId();
+    }
+    public void printInfo(){
+        System.out.println("firstname:"+ super.getFirstname() +"\tlastname:"+ super.getLastname());
     }
 }

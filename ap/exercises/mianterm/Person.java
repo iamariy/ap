@@ -1,9 +1,9 @@
 package ap.exercises.mianterm;
 
 public class Person {
-    private String firstname;
-    private String lastname;
-    private int id;
+    protected String firstname;
+    protected String lastname;
+    protected int id;
 
     public Person(String firstname,String lastname,int id){
         this.firstname=firstname;
@@ -18,5 +18,11 @@ public class Person {
     }
     public int getId(){
         return id;
+    }
+    public void setFirstname(String firstname){
+        this.firstname=firstname;
+    }
+    public void setLastname(String lastname){
+        this.lastname=lastname;
     }
 }
