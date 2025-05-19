@@ -32,4 +32,5 @@ public class Input {
     public void close(){
         scanner.close();
     }
+
 }

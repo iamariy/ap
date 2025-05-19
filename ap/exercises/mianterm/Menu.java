@@ -122,7 +122,10 @@ public class Menu {
             System.out.println("1.Show book information");
             System.out.println("2. Search Book by Name");
             System.out.println("3. Search Book by Author");
-            System.out.println("4. Logout");
+            System.out.println("4.Request to borrow book");
+            System.out.println("5.Request to return book");
+            System.out.println("6.Show borrowing book");
+            System.out.println("7. Logout");
             System.out.print("Enter your choice: ");
 
             int choice = input.inputInteger();
@@ -148,6 +151,19 @@ public class Menu {
                     student.searchingBookByAuthor(library, authorName);
                     break;
                 case 4:
+                    System.out.println("Enter book name");
+                    String bookname1=input.inputString();
+                    librarySystem.requestBorrow(bookname1);
+                    break;
+                case 5:
+                    System.out.println("Enter book name");
+                    String bookname2=input.inputString();
+                    librarySystem.requestReturn(bookname2,book);
+                    break;
+                case 6:
+                    librarySystem.showBorrowing(student);
+                    break;
+                case 7:
                     librarySystem.logoutStudent();
                     return;
                 default:
@@ -171,7 +187,9 @@ public class Menu {
             System.out.println("5. Add Book");
             System.out.println("6.Show book information");
             System.out.println("7.Show student information");
-            System.out.println("8. Logout");
+            System.out.println("8.Accept borrow request");
+            System.out.println("9.Accept return request");
+            System.out.println("10. Logout");
             System.out.print("Enter your choice: ");
 
             int choice = input.inputInteger();
@@ -232,8 +250,13 @@ public class Menu {
                             student.print();
                         }
                     }
-
                 case 8:
+                    librarySystem.acceptBorrow();
+                    break;
+                case 9:
+                    librarySystem.acceptReturn();
+                    break;
+                case 10:
                     librarySystem.logoutLibrarian();
                     return;
                 default:
@@ -249,7 +272,10 @@ public class Menu {
             System.out.println("2.Show student information");
             System.out.println("3.Show librarian information");
             System.out.println("4.Show book information");
-            System.out.println("5. Logout");
+            System.out.println("5.Delay list");
+            System.out.println("6.Show librarian borrow and return");
+            System.out.println("7.10 most book");
+            System.out.println("8. Logout");
             System.out.print("Enter your choice: ");
 
             int choice = input.inputInteger();
@@ -298,6 +324,11 @@ public class Menu {
                     }
                     break;
                 case 5:
+                    librarySystem.delay();
+                    break;
+                case 6:
+                    librarySystem.countBorrowBook();
+                case 8:
                     librarySystem.logoutManager();
                     return;
                 default:

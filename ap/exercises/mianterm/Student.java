@@ -2,6 +2,7 @@ package ap.exercises.mianterm;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Student extends Person {
@@ -66,4 +67,5 @@ public class Student extends Person {
             }
         }
     }
+
 }

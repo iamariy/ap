@@ -177,4 +177,67 @@ public class LibraryData {
 
         return null;
     }
+
+    public void saveTrust(List<Trust> trusts) {
+        if (trusts == null) return;
+
+        try (FileWriter writer = new FileWriter(basePath + "/trust.txt")) {
+            for (Trust t : trusts) {
+                String line = t.getBook().getName() + "|" +
+                        t.getBook().getAuthor() + "|" +
+                        t.getBook().getYear() + "|" +
+                        t.getBook().getPagecounter() + "|" +
+                        t.getStudent().getFirstname() + "|" +
+                        t.getStudent().getLastname() + "|" +
+                        t.getStudent().getMajor() + "|" +
+                        t.getStudent().getPassword() + "|" +
+                        t.getStudent().getId() + "|" +
+                        t.getStudent().getRegistrationDate() + "|" +
+                        t.getLibrarian().getFirstname() + "|" +
+                        t.getLibrarian().getLastname() + "|" +
+                        t.getLibrarian().getPassword() + "|" +
+                        t.getLibrarian().getId() + "|" +
+                        t.getBorrowDate() + "|" +
+                        t.getReturnDate() + "|" +
+                        t.getReceivDate() + "|" +
+                        t.getDelayDate() + "|" +
+                        t.isBorrowBook();
+
+                writer.write(line + "\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving trusts: " + e.getMessage());
+        }
+    }
+
+
+
+    public ArrayList<Trust> loadTrust() {
+        ArrayList<Trust> trusts = new ArrayList<>();
+        File file = new File(basePath + "/trust.txt");
+        if (!file.exists()) return trusts;
+
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String[] p = scanner.nextLine().split("\\|");
+                if (p.length == 19) {
+                    Book book = new Book(p[0], p[1], Integer.parseInt(p[2]), Integer.parseInt(p[3]));
+                    Student student = new Student(p[4], p[5], p[6], p[7], Integer.parseInt(p[8]), LocalDate.parse(p[9]));
+                    Librarian librarian = new Librarian(p[10], p[11], p[12], Integer.parseInt(p[13]));
+                    LocalDate borrowDate = LocalDate.parse(p[14]);
+                    LocalDate returnDate = LocalDate.parse(p[15]);
+                    LocalDate receivDate = p[16].equals("null") ? null : LocalDate.parse(p[16]);
+                    long delayDate = Long.parseLong(p[17]);
+                    boolean isBorrowed = Boolean.parseBoolean(p[18]);
+
+                    trusts.add(new Trust(book, student, librarian, borrowDate, returnDate, receivDate, delayDate, isBorrowed));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading trusts: " + e.getMessage());
+        }
+
+        return trusts;
+    }
+
 }

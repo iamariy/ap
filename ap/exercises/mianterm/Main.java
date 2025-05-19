@@ -17,6 +17,7 @@ public class Main {
         library.books = libraryData.loadBooks();
         library.librarians = libraryData.loadLibrarians();
         library.students = libraryData.loadStudents();
+        library.returnBook=libraryData.loadTrust();
 
         Manager manager = libraryData.loadManager();
         if (manager == null) {
@@ -40,11 +41,13 @@ public class Main {
             System.out.println("System initialized with default data");
         }
 
+
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             libraryData.saveBooks(library.books);
             libraryData.saveLibrarians(library.librarians);
             libraryData.saveStudents(library.students);
             libraryData.saveManager(librarySystem.getManager());
+            libraryData.saveTrust(library.returnBook);
             System.out.println("All data saved to CSV files");
         }));
 

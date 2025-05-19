@@ -42,6 +42,7 @@ public class Librarian extends Person {
     public String toString(){
         return super.getFirstname() +","+ super.getLastname() +","+ getPassword() +","+ getId();
     }
+
     public void printInfo(){
         System.out.println("firstname:"+ super.getFirstname() +"\tlastname:"+ super.getLastname());
     }

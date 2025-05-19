@@ -24,4 +24,5 @@ public class Manager extends Person {
         library.addLibrarian(librarian);
         library.setLibrarians(library.getLibrarians());
     }
+
 }

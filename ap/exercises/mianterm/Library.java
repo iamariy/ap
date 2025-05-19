@@ -6,12 +6,19 @@ import java.util.Objects;
 
 public class Library {
     private LibraryData libraryData;
+    private Trust trust;
+    private Library library;
+    private LibrarySystem librarySystem;
 
     String libraryName="Znu Library";
 
-        ArrayList<Librarian> librarians;
+    ArrayList<Librarian> librarians;
     ArrayList<Student> students;
     ArrayList<Book> books;
+    ArrayList<Trust> borrowRequests;
+    ArrayList<Trust> returnRequest;
+    ArrayList<Trust> requesst;
+    ArrayList<Trust> returnBook;
 
 
     public Library() {
@@ -20,6 +27,10 @@ public class Library {
         this.books=new ArrayList<>();
         this.librarians = new ArrayList<>();
         this.students = new ArrayList<>();
+        this.borrowRequests=new ArrayList<>();
+        this.returnRequest=new ArrayList<>();
+        this.requesst=new ArrayList<>();
+        this.returnBook=new ArrayList<>();
     }
 
 
@@ -96,4 +107,5 @@ public class Library {
     public ArrayList<Student> getStudents() {
         return students;
     }
+
 }

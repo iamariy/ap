@@ -5,6 +5,7 @@ public class Book {
     private String author;
     private int year;
     private int pagecounter;
+    private boolean borrow=false;
 
     public Book(String name, String author, int year, int pagecounter) {
         this.name = name;
@@ -25,6 +26,12 @@ public class Book {
     }
     public int getPagecounter(){
         return pagecounter;
+    }
+    public boolean isBorrow(){
+        return borrow;
+    }
+    public void setBorrow(){
+        this.borrow=borrow;
     }
     @Override
     public String toString(){
