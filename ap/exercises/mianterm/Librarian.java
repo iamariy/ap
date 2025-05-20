@@ -25,7 +25,7 @@ public class Librarian extends Person {
     public void setFirstname(String firstname){
         if (!firstname.isEmpty()) this.firstname=firstname;
     }
-    public void setLastname(String lastname){
+    public void setLastname(String  lastname){
         if (!lastname.isEmpty()) this.lastname=lastname;
     }
     public void setPassword(String password){

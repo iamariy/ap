@@ -9,7 +9,7 @@ public class Input {
         this.scanner = scanner;
     }
 
-    public Input() {
+    public Input( ) {
         this.scanner = new Scanner(System.in);
     }
 

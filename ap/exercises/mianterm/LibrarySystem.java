@@ -237,4 +237,84 @@ public class LibrarySystem {
 
         }
     }
+    public void delay() {
+        ArrayList<Trust> delay=libraryData.loadTrust();
+        boolean found1 = false;
+        for (Trust trust : returnBook) {
+            if (!trust.isBorrowBook() && trust.getDelayDate() > 0) {
+                System.out.println("Book" + trust.getBook().getName() + "delay" + trust.getDelayDate());
+                found1 = true;
+            }
+        }
+        if (!found1){
+            System.out.println("No book has delay");
+        }
+    }
+    public void countBorrowBook(ArrayList<Librarian> librarians){
+        ArrayList<Librarian> librarians1=new ArrayList<>();
+        ArrayList<Trust> trusts=libraryData.loadTrust();
+        for (Librarian librarian1 : librarians){
+            int count1=0;
+            for (Trust trust1 : trusts){
+                if (trust1.getLibrarian()!=null && trust1.getLibrarian().equals(librarian1) && trust1.isBorrowBook()) count1++;
+            }
+            System.out.println(librarian1.getFirstname() +" "+ librarian1.getLastname() +"is borrowed"+ count1 +"book");
+        }
+    }
+    public void countReturnBook(ArrayList<Librarian> librarians){
+        ArrayList<Trust> trusts=libraryData.loadTrust();
+        for (Librarian librarian1 : librarians){
+            int count2=0;
+            for (Trust trust1 : trusts){
+                if (trust1.getLibrarian()!=null && trust1.getLibrarian().equals(librarian1) && !trust1.isBorrowBook()) count2++;
+            }
+            System.out.println(librarian1.getFirstname() +" "+ librarian1.getLastname() +"is returned"+ count2 +"book");
+        }
+    }
+    public void showTenMost(){
+        ArrayList<Trust> trustList = libraryData.loadTrust();
+        ArrayList<Book> countedBooks = new ArrayList<>();
+        ArrayList<Integer> borrowCounts = new ArrayList<>();
+
+        LocalDate oneYearAgo = LocalDate.now().minusYears(1);
+
+        for (Trust trust : trustList) {
+            if (trust.isBorrowBook() && trust.getBorrowDate().isAfter(oneYearAgo)) {
+                Book book = trust.getBook();
+                boolean found = false;
+
+                for (int i = 0; i < countedBooks.size(); i++) {
+                    if (countedBooks.get(i).getName().equals(book.getName())) {
+                        borrowCounts.set(i, borrowCounts.get(i) + 1);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    countedBooks.add(book);
+                    borrowCounts.add(1);
+                }
+            }
+        }
+        for (int i = 0; i < borrowCounts.size() - 1; i++) {
+            for (int j = i + 1; j < borrowCounts.size(); j++) {
+                if (borrowCounts.get(j) > borrowCounts.get(i)) {
+                    int tempCount = borrowCounts.get(i);
+                    borrowCounts.set(i, borrowCounts.get(j));
+                    borrowCounts.set(j, tempCount);
+
+                    Book tempBook = countedBooks.get(i);
+                    countedBooks.set(i, countedBooks.get(j));
+                    countedBooks.set(j, tempBook);
+                }
+            }
+        }
+        System.out.println("Top 10 most borrowed books in the last year:");
+        for (int i = 0; i < Math.min(10, countedBooks.size()); i++) {
+            System.out.println((i + 1) + ". " + countedBooks.get(i).getName() +
+                    " - Borrowed " + borrowCounts.get(i) + " times");
+        }
+
+    }
 }

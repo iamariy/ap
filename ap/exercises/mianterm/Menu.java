@@ -26,12 +26,22 @@ public class Menu {
         this.input = Objects.requireNonNull(input, "Input cannot be null");
     }
 
+    public LibrarySystem getLibrarySystem(){
+        return librarySystem;
+    }
     public void setLibrarySystem(LibrarySystem librarySystem) {
         this.librarySystem = Objects.requireNonNull(librarySystem, "LibrarySystem cannot be null");
     }
 
     public void setStudent(Student student) {
         this.student = Objects.requireNonNull(student,"Students cannot be null");
+    }
+
+    public LibraryData getLibraryData(){
+        return libraryData;
+    }
+    public void setLibraryData(LibraryData libraryData){
+        this.libraryData=Objects.requireNonNull(libraryData,"LibraryDate cannot be null");
     }
 
     public void setLibrary(Library library) {
