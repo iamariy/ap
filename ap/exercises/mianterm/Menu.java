@@ -57,6 +57,7 @@ public class Menu {
         this.librarian = Objects.requireNonNull(librarian, "Librarian cannot be null");
     }
 
+
     public void showMenu() {
             System.out.println("\nMain Menu:");
             System.out.println("1.Register student");
@@ -327,7 +328,14 @@ public class Menu {
                     librarySystem.delay();
                     break;
                 case 6:
-                    librarySystem.countBorrowBook();
+                    LibraryData libraryData1=new LibraryData();
+                    ArrayList<Librarian> librarians1=new ArrayList<>();
+                    librarySystem.countBorrowBook(librarians1);
+                    librarySystem.countReturnBook(librarians1);
+                    break;
+                case 7:
+                    librarySystem.showTenMost();
+                    break;
                 case 8:
                     librarySystem.logoutManager();
                     return;

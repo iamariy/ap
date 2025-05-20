@@ -31,6 +31,7 @@ public class Student extends Person {
     public String toString(){
         return super.getFirstname() +","+ super.getLastname() +","+ getMajor() +","+ getDate() +","+ getPassword() +","+ super.getId();
     }
+
     public void print(){
         System.out.println("firstname:"+ super.getFirstname() +"\tlastname:"+ super.getLastname() +"\tmajor:"+ getMajor() +"\tregister date:"+ getDate() +"\tpassword:"+ getPassword() +"\tid:"+ getId());
     }

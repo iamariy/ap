@@ -21,6 +21,7 @@ public class Librarian extends Person {
         return Objects.equals(this.id,id) && Objects.equals(this.password,password);
     }
 
+
     public void setFirstname(String firstname){
         if (!firstname.isEmpty()) this.firstname=firstname;
     }
@@ -30,6 +31,7 @@ public class Librarian extends Person {
     public void setPassword(String password){
         if (!password.isEmpty()) this.password=password;
     }
+
 
     public Book addBook(Library library,String name,String author,int year,int pagecounter){
         Book book=new Book(name,author,year,pagecounter);

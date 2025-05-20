@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Library {
-    private LibraryData libraryData;
+    LibraryData libraryData;
     private Trust trust;
     private Library library;
-    private LibrarySystem librarySystem;
+    LibrarySystem librarySystem;
+    private Menu menu;
+    Manager manager;
 
     String libraryName="Znu Library";
 
@@ -24,7 +26,6 @@ public class Library {
     public Library() {
         this.libraryData = new LibraryData();
         this.books = libraryData.loadBooks();
-        this.books=new ArrayList<>();
         this.librarians = new ArrayList<>();
         this.students = new ArrayList<>();
         this.borrowRequests=new ArrayList<>();
@@ -33,15 +34,13 @@ public class Library {
         this.returnBook=new ArrayList<>();
     }
 
-
-
     public void addLibrarian(Librarian librarian) {
         if (librarians == null) {
             librarians = new ArrayList<>();
         }
         librarians.add(librarian);
         System.out.println("Librarian added successfully");
-        libraryData.saveLibrarians(librarians); // ذخیره مستقیم
+        libraryData.saveLibrarians(librarians);
     }
 
     public ArrayList<Librarian> getLibrarians() {
@@ -49,6 +48,9 @@ public class Library {
     }
     public ArrayList<Book> getBooks(){
         return books;
+    }
+    public LibrarySystem getLibrarySystem(){
+        return librarySystem;
     }
 
     public void setBooks(ArrayList<Book> books) {
@@ -60,11 +62,23 @@ public class Library {
         this.librarians = librarians;
         libraryData.saveLibrarians(librarians);
     }
+    public void setLibrarySystem(LibrarySystem librarySystem) {
+        this.librarySystem = librarySystem;
+    }
 
     public void setStudents(ArrayList<Student> students) {
         this.students = students;
         libraryData.saveStudents(students);
     }
+
+    public void setReturnBook(ArrayList<Trust> returnBook) {
+        this.returnBook = returnBook;
+    }
+
+    public ArrayList<Trust> getReturnBook() {
+        return returnBook;
+    }
+
 
     public void addBook(Book book){
         books.add(book);
@@ -108,4 +122,11 @@ public class Library {
         return students;
     }
 
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
 }

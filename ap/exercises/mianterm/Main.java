@@ -9,7 +9,7 @@ public class Main {
         Library library = new Library();
         LibrarySystem librarySystem = new LibrarySystem();
         LibraryData libraryData = new LibraryData();
-        Menu menu=new Menu(library,libraryData);
+        Menu menu = new Menu(library, libraryData);
 
         librarySystem.setLibrary(library);
         menu.setLibrary(library);
@@ -17,7 +17,7 @@ public class Main {
         library.books = libraryData.loadBooks();
         library.librarians = libraryData.loadLibrarians();
         library.students = libraryData.loadStudents();
-        library.returnBook=libraryData.loadTrust();
+        library.returnBook = libraryData.loadTrust();
 
         Manager manager = libraryData.loadManager();
         if (manager == null) {

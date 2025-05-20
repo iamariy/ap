@@ -14,10 +14,10 @@ public class Book {
         this.pagecounter = pagecounter;
     }
 
+
     public String getName() {
         return name;
     }
-
     public String getAuthor() {
         return author;
     }
@@ -38,6 +38,7 @@ public class Book {
         return getName() +","+
                 getAuthor()+","+ getYear() +","+ getPagecounter();
     }
+
     public void print(){
         System.out.println("Name:" +getName()+ "\tauthor:" +getAuthor()+ "\tyear:" +getYear()+ "\tpagecounter:" +getPagecounter());
     }

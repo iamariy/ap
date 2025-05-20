@@ -67,5 +67,4 @@ public class Trust {
     public String toString(){
         return book.getName() +","+ student.getFirstname() +","+ student.getLastname() +","+ librarian.getFirstname() +","+ librarian.getLastname() +","+ borrowDate +","+ returnDate +","+ receivDate +","+ delayDate +","+ borrowBook;
     }
-
 }

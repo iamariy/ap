@@ -101,9 +101,6 @@ public class LibraryData {
         return students;
     }
 
-
-
-
     public void saveLibrarians(List<Librarian> librarians) {
         try {
             FileWriter writer = new FileWriter(basePath + "/librarians.txt");
@@ -159,20 +156,26 @@ public class LibraryData {
 
     public Manager loadManager() {
         File file = new File(basePath + "/manager.txt");
+        System.out.println("Loading manager from: " + file.getAbsolutePath());
 
-        if (!file.exists()) return null;
+        if (!file.exists()) {
+            System.out.println("Manager file does not exist");
+            return null;
+        }
 
-        try {
-            Scanner scanner = new Scanner(file);
+        try (Scanner scanner = new Scanner(file)) {
             if (scanner.hasNextLine()) {
                 String[] parts = scanner.nextLine().split("\\|");
                 if (parts.length == 5) {
-                    return new Manager(parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4]));
+                    Manager loadedManager = new Manager(
+                            parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4])
+                    );
+                    System.out.println("Successfully loaded manager: " + loadedManager);
+                    return loadedManager;
                 }
             }
-            scanner.close();
         } catch (Exception e) {
-            System.out.println("Error loading manager: " + e.getMessage());
+            System.err.println("Error loading manager: " + e.getMessage());
         }
 
         return null;
@@ -210,8 +213,6 @@ public class LibraryData {
         }
     }
 
-
-
     public ArrayList<Trust> loadTrust() {
         ArrayList<Trust> trusts = new ArrayList<>();
         File file = new File(basePath + "/trust.txt");
@@ -239,5 +240,4 @@ public class LibraryData {
 
         return trusts;
     }
-
 }

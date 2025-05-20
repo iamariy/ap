@@ -1,6 +1,6 @@
 package ap.exercises.mianterm;
 
-public class Manager extends Person {
+ class Manager extends Person {
     private String password;
     private String education;
 
