@@ -25,7 +25,7 @@ public class WebsiteDownloader {
 
             System.out.println("Downloaded successfully!");
         } catch (Exception e) {
-            System.err.println("Error " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
@@ -47,7 +47,7 @@ public class WebsiteDownloader {
             downloadFiles(audioUrls, Config.SONG_DIR);
 
         } catch (Exception e) {
-            System.err.println("Error for downloading" + e.getMessage());
+            System.err.println("Error for downloading: " + e.getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ public class WebsiteDownloader {
         Path path = Paths.get(Config.HTML_DIR, fileName);
         Files.write(path, content.getBytes());
 
-        System.out.println("HTML Saved" + fileName);
+        System.out.println("HTML Saved: " + fileName);
     }
 
     private static List<String> extractUrls(String html, String tag, String attribute) {
@@ -105,12 +105,12 @@ public class WebsiteDownloader {
 
                 try (InputStream in = new URL(url).openStream()) {
                     Files.copy(in, outputPath);
-                    System.out.println("Downloaded" + fileName);
+                    System.out.println("Downloaded: " + fileName);
 
                     Thread.sleep(Config.DOWNLOAD_DELAY);
                 }
             } catch (Exception e) {
-                System.err.println("Error for downloading " + url + ": " + e.getMessage());
+                System.err.println("Error for downloading: " + url + ": " + e.getMessage());
             }
         }
     }
