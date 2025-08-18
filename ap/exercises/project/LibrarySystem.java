@@ -1,5 +1,7 @@
 package ap.exercises.project;
 
+import java.util.Scanner;
+
 public class LibrarySystem {
     private StudentManager studentManager;
     private MenuHandler menuHandler;
@@ -22,7 +24,35 @@ public class LibrarySystem {
     }
 
     public void editStudentInformation(Student student) {
-        System.out.println("Not implemented.");
+        while (true){
+            System.out.println("\n===Edit Information===");
+            System.out.println("1.Edit username: ");
+            System.out.println("2.Edit password: ");
+            System.out.println("3.Exit");
+
+            Scanner scanner=new Scanner(System.in);
+            System.out.println("Enter your choice");
+            int choice=scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice){
+                case 1:
+                    System.out.println("New username: ");
+                    String nu=scanner.nextLine();
+                    student.setUsername(nu);
+                    break;
+                case 2:
+                    System.out.println("New password: ");
+                    String np=scanner.nextLine();
+                    student.setPassword(np);
+                    break;
+                case 3:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid number!Please try again.");
+            }
+        }
     }
 
     public void borrowBook(Student student) {

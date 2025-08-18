@@ -112,6 +112,7 @@ public class MenuHandler {
                     break;
                 case 2:
                     librarySystem.editStudentInformation(currentUser);
+                    librarySystem.saveStudents();
                     break;
                 case 3:
                     librarySystem.borrowBook(currentUser);
