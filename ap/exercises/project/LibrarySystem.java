@@ -5,10 +5,12 @@ import java.util.Scanner;
 public class LibrarySystem {
     private StudentManager studentManager;
     private MenuHandler menuHandler;
+    private LibrarianManager librarianManager;
 
     public LibrarySystem() {
         this.studentManager = new StudentManager();
-        this.menuHandler = new MenuHandler(this);
+        this.menuHandler=new MenuHandler(this);
+        this.librarianManager=new LibrarianManager();
     }
 
     public int getStudentCount() {
@@ -68,7 +70,7 @@ public class LibrarySystem {
     }
 
     public void start() {
-        menuHandler.displayMainMenu();
+        menuHandler.menu();
     }
 
     public void saveStudents(){
@@ -77,6 +79,18 @@ public class LibrarySystem {
 
     public void loadStudents(){
         studentManager.loading();
+    }
+
+    public void addLibrarian(String username,String password){
+        librarianManager.addLibrarian(username,password);
+    }
+
+    public void saveLibraians(){
+        librarianManager.saving();
+    }
+
+    public void loadLibrarians(){
+        librarianManager.loading();
     }
 
     public static void main(String[] args) {

@@ -8,11 +8,36 @@ public class MenuHandler {
     private Scanner scanner;
     private LibrarySystem librarySystem;
     private Student currentUser;
+    private Manager manager;
 
     public MenuHandler(LibrarySystem librarySystem) {
         this.scanner = new Scanner(System.in);
         this.librarySystem = librarySystem;
         this.currentUser = null;
+        this.manager=new Manager("manager","1");
+    }
+
+    public void menu(){
+        while (true){
+            System.out.println("\n=== Choose your role ===");
+            System.out.println("1.Enter as student");
+            System.out.println("2.Enter as guest user");
+            System.out.println("3.Enter as librarian");
+            System.out.println("4.Enter as system manager");
+
+            int choice=getIntInput(1,4);
+
+            switch (choice){
+                case 1:
+                    displayMainMenu();
+                    break;
+                case 4:
+                    loginManager();
+                    break;
+                default:
+                    System.out.println("Invalid number.Please try again!");
+            }
+        }
     }
 
     public void displayMainMenu() {
@@ -131,6 +156,61 @@ public class MenuHandler {
                     System.out.println("Invalid option! Please try again.");
             }
         }
+    }
+
+    private void managerMenu(){
+        System.out.println("Manager Menu");
+
+        while (true) {
+            System.out.println("1.Add librarian");
+            System.out.println("2.View librarian performance");
+            System.out.println("3.View book deposit statistics");
+            System.out.println("4.View student deposit statistics");
+            System.out.println("5.Exit");
+
+            int choice=getIntInput(1,5);
+
+            switch (choice){
+                case 1:
+                addLibrarian();
+                librarySystem.saveLibraians();
+                break;
+                case 5:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid number.Please try again!");
+            }
+        }
+
+    }
+
+    private void loginManager(){
+        System.out.println("Manager login");
+
+        System.out.println("Enter username");
+        String username=scanner.nextLine();
+        System.out.println("Enter password");
+        String password=scanner.nextLine();
+
+        if (username.equals(manager.getUsername()) && password.equals(manager.getPassword())){
+            System.out.println("Welcome!");
+            managerMenu();
+        } else {
+            System.out.println("Infomation is false.Please try again!");
+        }
+    }
+
+    private void addLibrarian(){
+        System.out.println("=== New Librarian ===");
+
+        System.out.println("Enter username");
+        String username=scanner.nextLine();
+        System.out.println("Enter password");
+        String password=scanner.nextLine();
+
+        librarySystem.addLibrarian(username,password);
+
     }
 
     private int getIntInput(int min, int max) {
