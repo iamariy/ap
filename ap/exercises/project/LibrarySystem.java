@@ -93,6 +93,10 @@ public class LibrarySystem {
         librarianManager.loading();
     }
 
+    public Librarian authenticateLibrarian(String username, String password) {
+        return librarianManager.authenticateLibrarian(username, password);
+    }
+
     public static void main(String[] args) {
         LibrarySystem system = new LibrarySystem();
         system.start();

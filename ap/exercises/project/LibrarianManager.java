@@ -23,6 +23,13 @@ public class LibrarianManager {
         System.out.println("Student registration completed successfully.");
     }
 
+    public Librarian authenticateLibrarian(String username, String password) {
+        return librarians.stream()
+                .filter(l -> l.getUserename().equals(username) && l.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
+    }
+
     public void saving(){
         dataManager.saveLibrarian(librarians);
     }
@@ -32,6 +39,6 @@ public class LibrarianManager {
     }
 
     private boolean isUsernameTaken(String username) {
-        return librarians.stream().anyMatch(l -> l.getUsrename().equals(username));
+        return librarians.stream().anyMatch(l -> l.getUserename().equals(username));
     }
 }

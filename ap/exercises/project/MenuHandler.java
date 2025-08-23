@@ -9,12 +9,14 @@ public class MenuHandler {
     private LibrarySystem librarySystem;
     private Student currentUser;
     private Manager manager;
+    private Librarian currentUsre2;
 
     public MenuHandler(LibrarySystem librarySystem) {
         this.scanner = new Scanner(System.in);
         this.librarySystem = librarySystem;
         this.currentUser = null;
         this.manager=new Manager("manager","1");
+        this.currentUsre2=null;
     }
 
     public void menu(){
@@ -30,6 +32,9 @@ public class MenuHandler {
             switch (choice){
                 case 1:
                     displayMainMenu();
+                    break;
+                case 3:
+                    logInLibrarian();
                     break;
                 case 4:
                     loginManager();
@@ -159,14 +164,14 @@ public class MenuHandler {
     }
 
     private void managerMenu(){
-        System.out.println("Manager Menu");
+        System.out.println("=== Manager Menu ===");
 
         while (true) {
             System.out.println("1.Add librarian");
             System.out.println("2.View librarian performance");
             System.out.println("3.View book deposit statistics");
             System.out.println("4.View student deposit statistics");
-            System.out.println("5.Exit");
+            System.out.println("5.Logout");
 
             int choice=getIntInput(1,5);
 
@@ -186,7 +191,7 @@ public class MenuHandler {
     }
 
     private void loginManager(){
-        System.out.println("Manager login");
+        System.out.println("=== Manager login ===");
 
         System.out.println("Enter username");
         String username=scanner.nextLine();
@@ -197,7 +202,7 @@ public class MenuHandler {
             System.out.println("Welcome!");
             managerMenu();
         } else {
-            System.out.println("Infomation is false.Please try again!");
+            System.out.println("Information is false.Please try again!");
         }
     }
 
@@ -211,6 +216,45 @@ public class MenuHandler {
 
         librarySystem.addLibrarian(username,password);
 
+    }
+
+    private void librarianMenu(){
+        System.out.println("=== Librarian Menu ===");
+
+        System.out.println("1.Edit password");
+        System.out.println("2.Add book");
+        System.out.println("3.Search and edit book's information");
+        System.out.println("4.Review and approve book loan requests");
+        System.out.println("5.View a student's loan history report");
+        System.out.println("6.Activating and deactivating a student");
+        System.out.println("7.Receiving a borrowed book");
+        System.out.println("8.Logout");
+
+        int choice=getIntInput(1,8);
+
+        switch (choice){
+
+        }
+    }
+
+    private void logInLibrarian(){
+        System.out.println("=== Login Librarian ===");
+
+        librarySystem.loadLibrarians();
+
+        System.out.println("Enter username");
+        String username=scanner.nextLine();
+        System.out.println("Enter password");
+        String password=scanner.nextLine();
+
+        currentUsre2=librarySystem.authenticateLibrarian(username,password);
+
+        if (currentUsre2!=null){
+            System.out.println("Login successful,welcome!\n Librarian"+ currentUsre2.getUserename());
+            librarianMenu();
+        } else {
+            System.out.println("Invalid username or password.Please try again!");
+        }
     }
 
     private int getIntInput(int min, int max) {

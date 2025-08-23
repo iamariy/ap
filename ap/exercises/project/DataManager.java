@@ -45,7 +45,7 @@ public class DataManager {
     public void saveLibrarian(List<Librarian> librarians){
         try(PrintWriter writer=new PrintWriter(new FileWriter(filepath2))){
             for (Librarian librarian : librarians){
-                writer.println(librarian.getUsrename() +","+ librarian.getPassword());
+                writer.println(librarian.getUserename() +","+ librarian.getPassword());
             }
         } catch (IOException e){
             System.out.println("Error to save librarians"+ e.getMessage());
