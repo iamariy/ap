@@ -218,22 +218,32 @@ public class MenuHandler {
 
     }
 
-    private void librarianMenu(){
+    private void librarianMenu() {
         System.out.println("=== Librarian Menu ===");
 
-        System.out.println("1.Edit password");
-        System.out.println("2.Add book");
-        System.out.println("3.Search and edit book's information");
-        System.out.println("4.Review and approve book loan requests");
-        System.out.println("5.View a student's loan history report");
-        System.out.println("6.Activating and deactivating a student");
-        System.out.println("7.Receiving a borrowed book");
-        System.out.println("8.Logout");
+        while (true) {
+            System.out.println("1.Edit password");
+            System.out.println("2.Add book");
+            System.out.println("3.Search and edit book's information");
+            System.out.println("4.Review and approve book loan requests");
+            System.out.println("5.View a student's loan history report");
+            System.out.println("6.Activating and deactivating a student");
+            System.out.println("7.Receiving a borrowed book");
+            System.out.println("8.Logout");
 
-        int choice=getIntInput(1,8);
+            int choice = getIntInput(1, 8);
 
-        switch (choice){
-
+            switch (choice) {
+                case 1:
+                    librarySystem.editLibrarianPassword(currentUsre2);
+                    librarySystem.saveLibraians();
+                    break;
+                case 8:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid number.Please try again!");
+            }
         }
     }
 

@@ -97,6 +97,14 @@ public class LibrarySystem {
         return librarianManager.authenticateLibrarian(username, password);
     }
 
+    public void editLibrarianPassword(Librarian librarian){
+        Scanner scanner=new Scanner(System.in);
+
+        System.out.println("Enter new password");
+        String np=scanner.nextLine();
+        librarian.setPassword(np);
+    }
+
     public static void main(String[] args) {
         LibrarySystem system = new LibrarySystem();
         system.start();
