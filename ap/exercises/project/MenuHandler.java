@@ -164,6 +164,8 @@ public class MenuHandler {
     }
 
     private void managerMenu(){
+        librarySystem.loadLibrarians();
+
         System.out.println("=== Manager Menu ===");
 
         while (true) {
@@ -219,6 +221,8 @@ public class MenuHandler {
     }
 
     private void librarianMenu() {
+        librarySystem.loadBooks();
+
         System.out.println("=== Librarian Menu ===");
 
         while (true) {
@@ -237,6 +241,23 @@ public class MenuHandler {
                 case 1:
                     librarySystem.editLibrarianPassword(currentUsre2);
                     librarySystem.saveLibraians();
+                    break;
+                case 2:
+                    System.out.println("=== Add book ===");
+
+                    System.out.println("Enter name");
+                    String name=scanner.nextLine();
+                    System.out.println("Enter author");
+                    String author=scanner.nextLine();
+                    System.out.println("Enter year");
+                    int year=scanner.nextInt();
+                    System.out.println("Enter page count");
+                    int pagecount=scanner.nextInt();
+                    System.out.println("Enter count");
+                    int count=scanner.nextInt();
+
+                    librarySystem.addBook(name,author,year,pagecount,count);
+                    librarySystem.saveBooks();
                     break;
                 case 8:
                     System.out.println("Exiting...");

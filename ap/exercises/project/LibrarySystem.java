@@ -6,11 +6,13 @@ public class LibrarySystem {
     private StudentManager studentManager;
     private MenuHandler menuHandler;
     private LibrarianManager librarianManager;
+    private BookManager bookManager;
 
     public LibrarySystem() {
         this.studentManager = new StudentManager();
         this.menuHandler=new MenuHandler(this);
         this.librarianManager=new LibrarianManager();
+        this.bookManager=new BookManager();
     }
 
     public int getStudentCount() {
@@ -103,6 +105,18 @@ public class LibrarySystem {
         System.out.println("Enter new password");
         String np=scanner.nextLine();
         librarian.setPassword(np);
+    }
+
+    public void addBook(String name,String author,int year,int pagecounter,int count){
+        bookManager.addBook(name,author,year,pagecounter,count);
+    }
+
+    public void saveBooks(){
+        bookManager.saving();
+    }
+
+    public void loadBooks(){
+        bookManager.loading();
     }
 
     public static void main(String[] args) {
