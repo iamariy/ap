@@ -104,4 +104,5 @@ public class DataManager {
             System.out.println("Error to load students"+ e.getMessage());
         }
     }
+
 }
