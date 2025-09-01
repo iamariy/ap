@@ -228,14 +228,15 @@ public class MenuHandler {
         while (true) {
             System.out.println("1.Edit password");
             System.out.println("2.Add book");
-            System.out.println("3.Search and edit book's information");
-            System.out.println("4.Review and approve book loan requests");
-            System.out.println("5.View a student's loan history report");
-            System.out.println("6.Activating and deactivating a student");
-            System.out.println("7.Receiving a borrowed book");
-            System.out.println("8.Logout");
+            System.out.println("3.Searching book");
+            System.out.println("4.Edit book's information");
+            System.out.println("5.Review and approve book loan requests");
+            System.out.println("6.View a student's loan history report");
+            System.out.println("7.Activating and deactivating a student");
+            System.out.println("8.Receiving a borrowed book");
+            System.out.println("9.Logout");
 
-            int choice = getIntInput(1, 8);
+            int choice = getIntInput(1,9);
 
             switch (choice) {
                 case 1:
@@ -259,7 +260,20 @@ public class MenuHandler {
                     librarySystem.addBook(name,author,year,pagecount,count);
                     librarySystem.saveBooks();
                     break;
-                case 8:
+                case 3:
+                    System.out.println("=== Searching book ===");
+                    System.out.println("Enter name");
+                    String bookName=scanner.nextLine();
+                    librarySystem.searchBook(bookName);
+                    break;
+                case 4:
+                    System.out.println("=== Edit book's information ===");
+                    System.out.println("Enter name");
+                    String bookn=scanner.nextLine();
+                    librarySystem.editBooks(bookn);
+                    librarySystem.saveBooks();
+                    break;
+                    case 9:
                     System.out.println("Exiting...");
                     return;
                 default:

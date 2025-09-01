@@ -119,6 +119,46 @@ public class LibrarySystem {
         bookManager.loading();
     }
 
+    public void searchBook(String name){
+        bookManager.searching(name);
+    }
+
+    public void editBooks(String name){
+        Scanner scanner=new Scanner(System.in);
+
+        while (true){
+            System.out.println("1.Edit book name");
+            System.out.println("2.Edit author");
+            System.out.println("3.Edit year");
+            System.out.println("4.Edit page count");
+            System.out.println("5.Exit");
+
+            System.out.println("Enter choice");
+            int choice=scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice){
+                case 1:
+                    bookManager.editName(name);
+                    break;
+                case 2:
+                    bookManager.editAuthor(name);
+                    break;
+                case 3:
+                    bookManager.editYear(name);
+                    break;
+                case 4:
+                    bookManager.editPage(name);
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid number.Please try again!");
+            }
+        }
+    }
+
     public static void main(String[] args) {
         LibrarySystem system = new LibrarySystem();
         system.start();
