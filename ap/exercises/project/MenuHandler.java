@@ -308,6 +308,7 @@ public class MenuHandler {
     private void guestMenu(){
         System.out.println("Welcome!");
         librarySystem.loadStudents();
+        librarySystem.loadBooks();
 
         while (true){
             System.out.println("1.Number of students registered");
@@ -320,6 +321,11 @@ public class MenuHandler {
             switch (choice){
                 case 1:
                     displayStudentCount();
+                    break;
+                case 2:
+                    System.out.println("Enter book name");
+                    String bookN=scanner.nextLine();
+                    librarySystem.searchBook(bookN);
                     break;
                 case 4:
                     System.out.println("Exiting...");
