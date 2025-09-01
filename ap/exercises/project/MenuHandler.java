@@ -33,6 +33,9 @@ public class MenuHandler {
                 case 1:
                     displayMainMenu();
                     break;
+                case 2:
+                    guestMenu();
+                    break;
                 case 3:
                     logInLibrarian();
                     break;
@@ -299,6 +302,31 @@ public class MenuHandler {
             librarianMenu();
         } else {
             System.out.println("Invalid username or password.Please try again!");
+        }
+    }
+
+    private void guestMenu(){
+        System.out.println("Welcome!");
+        librarySystem.loadStudents();
+
+        while (true){
+            System.out.println("1.Number of students registered");
+            System.out.println("2.Searching book");
+            System.out.println("3.View statistical information");
+            System.out.println("4.Exit");
+
+            int choice=getIntInput(1,4);
+
+            switch (choice){
+                case 1:
+                    displayStudentCount();
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid number.Please try again!");
+            }
         }
     }
 
