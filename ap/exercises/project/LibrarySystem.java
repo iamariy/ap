@@ -68,7 +68,7 @@ public class LibrarySystem {
     }
 
     public void displayAvailableBooks() {
-        System.out.println("Not implemented.");
+        bookManager.isAvailable();
     }
 
     public void start() {

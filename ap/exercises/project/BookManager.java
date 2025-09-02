@@ -138,4 +138,27 @@ public class BookManager {
             System.out.println("Book is not found");
         }
     }
+
+    public void isAvailable() {
+        Scanner scanner = new Scanner(System.in);
+        boolean found=false;
+
+        System.out.println("Enter a thing for search");
+        String name = scanner.nextLine();
+
+        for (Book book : books) {
+            if (name.equals(book.getName()) || name.equals(book.getAuthor()) || name.equals(Integer.toString(book.getYear()))) {
+                System.out.println("Book name is: " + book.getName() + " Author is: " + book.getAuthor() + " Year is: " + book.getYear() + " Page count is: " + book.getPagecounter());
+                if (book.getCount() > 0) {
+                    System.out.println("Book is available!");
+                } else if (book.getCount() == 0) {
+                    System.out.println("Book is not available!");
+                }
+                found=true;
+                break;
+            } if (!found){
+                System.out.println("Book is not registered!");
+            }
+        }
+    }
 }

@@ -126,6 +126,8 @@ public class MenuHandler {
     }
 
     private void displayLoggedInStudentMenu() {
+        librarySystem.loadBooks();
+
         while (currentUser != null) {
             System.out.println("\n=== Student Dashboard ===");
             System.out.println("1. View My Information");
