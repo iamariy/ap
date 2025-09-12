@@ -165,6 +165,13 @@ public class LibrarySystem {
         }
     }
 
+    public void activing(){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Enter student id");
+        String str=scanner.nextLine();
+        studentManager.changeActiving(str);
+    }
+
     public void accepting(Librarian librarian){
         bookManager.accept(librarian,LocalDate.now());
     }

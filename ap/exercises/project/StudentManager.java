@@ -2,6 +2,7 @@ package ap.exercises.project;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class StudentManager {
     private List<Student> students;
@@ -23,7 +24,7 @@ public class StudentManager {
             return;
         }
 
-        Student newStudent = new Student(name, studentId, username, password);
+        Student newStudent = new Student(name, studentId, username, password,true);
         students.add(newStudent);
         System.out.println("Student registration completed successfully.");
     }
@@ -63,6 +64,50 @@ public class StudentManager {
 
     public void loading(){
         dataManager.loadStudents(students);
+    }
+
+    public void changeActiving(String studentId) {
+        Scanner scanner = new Scanner(System.in);
+        boolean found = false;
+
+        for (Student student : students) {
+            if (student.getStudentId().equals(studentId)) {
+                found = true;
+                System.out.println(student.isActive());
+
+                if (student.isActive()) {
+                    System.out.println("Do you want to change to di active? (y or n)?");
+                    String input = scanner.nextLine();
+                    if (input.equals("y")) {
+                        student.setActive(false);
+                        saving();
+                        System.out.println("Student activity is changed to di active");
+                    } else if (input.equals("n")) {
+                        System.out.println("Student remains active");
+                    } else {
+                        System.out.println("Invalid choice! Please try again");
+                    }
+                } else {
+                    System.out.println("Do you want to change to active? (y or n)?");
+                    String input = scanner.nextLine();
+                    if (input.equals("y")) {
+                        student.setActive(true);
+                        saving();
+                        System.out.println("Student activity is changed to active");
+                    } else if (input.equals("n")) {
+                        System.out.println("Student remains inactive");
+                    } else {
+                        System.out.println("Invalid choice! Please try again");
+                    }
+                }
+
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Student ID is incorrect");
+        }
     }
 
 }

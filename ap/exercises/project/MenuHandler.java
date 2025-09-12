@@ -232,6 +232,7 @@ public class MenuHandler {
         librarySystem.load();
         librarySystem.loadAccept();
         librarySystem.loadLibrarians();
+        librarySystem.loadStudents();
 
         System.out.println("=== Librarian Menu ===");
 
@@ -288,6 +289,9 @@ public class MenuHandler {
                     break;
                 case 5:
                     librarySystem.accepting(currentUsre2);
+                    break;
+                case 7:
+                    librarySystem.activing();
                     break;
                     case 9:
                     System.out.println("Exiting...");

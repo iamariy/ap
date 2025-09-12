@@ -19,7 +19,7 @@ public class DataManager {
     public void saveStudents(List<Student> students){
         try(PrintWriter writer=new PrintWriter(new FileWriter(filepath1))){
             for (Student student : students){
-                writer.println(student.getName() +","+ student.getStudentId() +","+ student.getUsername() +","+ student.getPassword());
+                writer.println(student.getName() +","+ student.getStudentId() +","+ student.getUsername() +","+ student.getPassword() +","+ student.isActive());
             }
         } catch (IOException e){
             System.out.println("Error to save students"+ e.getMessage());
@@ -38,8 +38,8 @@ public class DataManager {
             while (scanner.hasNextLine()){
                 String line=scanner.nextLine().trim();
                 String[] parts=line.split(",");
-                if (parts.length==4){
-                    students.add(new Student(parts[0].trim(),parts[1].trim(),parts[2].trim(),parts[3].trim()));
+                if (parts.length==5){
+                    students.add(new Student(parts[0].trim(),parts[1].trim(),parts[2].trim(),parts[3].trim(),Boolean.parseBoolean(parts[4].trim())));
                 }
             }
         } catch (IOException e){

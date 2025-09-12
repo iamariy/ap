@@ -180,6 +180,11 @@ public class BookManager {
     }
 
     public void reqests(Student student, LocalDate start){
+        if (student.isActive()==false) {
+            System.out.println("You can't borrow book");
+            return;
+        }
+
         Scanner scanner=new Scanner(System.in);
 
         System.out.println("Enter book name");
