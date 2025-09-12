@@ -128,6 +128,7 @@ public class MenuHandler {
     private void displayLoggedInStudentMenu() {
         librarySystem.loadBooks();
         librarySystem.load();
+        librarySystem.loadAccept();
 
         while (currentUser != null) {
             System.out.println("\n=== Student Dashboard ===");
@@ -228,6 +229,9 @@ public class MenuHandler {
 
     private void librarianMenu() {
         librarySystem.loadBooks();
+        librarySystem.load();
+        librarySystem.loadAccept();
+        librarySystem.loadLibrarians();
 
         System.out.println("=== Librarian Menu ===");
 
@@ -258,10 +262,13 @@ public class MenuHandler {
                     String author=scanner.nextLine();
                     System.out.println("Enter year");
                     int year=scanner.nextInt();
+                    scanner.nextLine();
                     System.out.println("Enter page count");
                     int pagecount=scanner.nextInt();
+                    scanner.nextLine();
                     System.out.println("Enter count");
                     int count=scanner.nextInt();
+                    scanner.nextLine();
 
                     librarySystem.addBook(name,author,year,pagecount,count);
                     librarySystem.saveBooks();
@@ -278,6 +285,9 @@ public class MenuHandler {
                     String bookn=scanner.nextLine();
                     librarySystem.editBooks(bookn);
                     librarySystem.saveBooks();
+                    break;
+                case 5:
+                    librarySystem.accepting(currentUsre2);
                     break;
                     case 9:
                     System.out.println("Exiting...");

@@ -165,8 +165,16 @@ public class LibrarySystem {
         }
     }
 
+    public void accepting(Librarian librarian){
+        bookManager.accept(librarian,LocalDate.now());
+    }
+
     public void load(){
         bookManager.loadRequest();
+    }
+
+    public void loadAccept(){
+        bookManager.loadAccept();
     }
 
     public static void main(String[] args) {

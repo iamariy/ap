@@ -6,6 +6,10 @@ public class Librarian extends Person{
         super(userename,password);
     }
 
+    public Librarian(String username){
+        super(username,"2222");
+    }
+
 
     @Override
     public String toString(){

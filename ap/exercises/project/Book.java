@@ -56,6 +56,10 @@ public class Book {
         this.pagecounter=pagecounter;
     }
 
+    public void setCount(int count){
+        this.count=count;
+    }
+
     @Override
     public String toString(){
         return "name: " +name+

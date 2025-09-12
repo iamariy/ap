@@ -15,6 +15,11 @@ public class BorrowRequest {
         this.end=end;
     }
 
+    public BorrowRequest(Student student,Book book){
+        this.student=student;
+        this.book=book;
+    }
+
     public Student getStudent(){
         return student;
     }

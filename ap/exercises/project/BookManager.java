@@ -9,11 +9,15 @@ public class BookManager {
     private List<Book> books;
     private DataManager dataManager;
     private List<BorrowRequest> borrowRequests;
+    private List<AcceptBorrow> acceptBorrows;
+    private Book book;
 
     public BookManager(){
         this.books=new ArrayList<>();
         this.dataManager=new DataManager();
         this.borrowRequests=new ArrayList<>();
+        this.acceptBorrows=new ArrayList<>();
+        this.books=books;
     }
 
 //    public BookManager(BorrowRequest borrowRequest){
@@ -23,10 +27,9 @@ public class BookManager {
     public void addBook(String name,String author,int year,int pagecounter,int count){
         Book newBook=new Book(name,author,year,pagecounter,count);
 
-        for (int i=0;i<count;i++){
+
             books.add(newBook);
-            System.out.format("book %d is added successfully!\n", i+1);
-        }
+            System.out.println("book %d is added successfully!");
     }
 
     public void saving(){
@@ -39,6 +42,10 @@ public class BookManager {
 
     public void loadRequest(){
         dataManager.loadRequest(borrowRequests);
+    }
+
+    public void loadAccept(){
+        dataManager.loadAccept(acceptBorrows);
     }
 
     public void searching(String name){
@@ -148,50 +155,29 @@ public class BookManager {
         }
     }
 
-//    public Book isAvailable(String name) {
-////        Scanner scanner = new Scanner(System.in);
-////        boolean found=false;
-//
-//        for (Book book : books) {
-//            if (name.equals(book.getName()) || name.equals(book.getAuthor()) || name.equals(Integer.toString(book.getYear()))) {
-//                System.out.println("Book name is: " + book.getName() + " Author is: " + book.getAuthor() + " Year is: " + book.getYear() + " Page count is: " + book.getPagecounter());
-//                if (book.getCount() > 0) {
-//                    System.out.println("Book is available!");
-//                } else if (book.getCount() == 0) {
-//                    System.out.println("Book is not available!");
-//                }
-////                found=true;
-////                break;
-////            } if (!found){
-//                System.out.println("Book is not registered!");
-////            }
-//        }
-//    }
+    public Book isAvailable(String searchTerm) {
+        for (Book book : books) {
+            if (searchTerm.equals(book.getName()) ||
+                    searchTerm.equals(book.getAuthor()) ||
+                    searchTerm.equals(Integer.toString(book.getYear()))) {
 
+                System.out.println("Book name is: " + book.getName() +
+                        " Author is: " + book.getAuthor() +
+                        " Year is: " + book.getYear() +
+                        " Page count is: " + book.getPagecounter());
 
-public Book isAvailable(String searchTerm) {
-    for (Book book : books) {
-        if (searchTerm.equals(book.getName()) ||
-                searchTerm.equals(book.getAuthor()) ||
-                searchTerm.equals(Integer.toString(book.getYear()))) {
-
-            System.out.println("Book name is: " + book.getName() +
-                    " Author is: " + book.getAuthor() +
-                    " Year is: " + book.getYear() +
-                    " Page count is: " + book.getPagecounter());
-
-            if (book.getCount() > 0) {
-                System.out.println("Book is available!");
-                return book; 
-            } else {
-                System.out.println("Book is not available!");
-                return null;
+                if (book.getCount() > 0) {
+                    System.out.println("Book is available!");
+                    return book;
+                } else {
+                    System.out.println("Book is not available!");
+                    return null;
+                }
             }
         }
+        System.out.println("Book is not registered!");
+        return null;
     }
-    System.out.println("Book is not registered!");
-    return null;
-}
 
     public void reqests(Student student, LocalDate start){
         Scanner scanner=new Scanner(System.in);
@@ -210,5 +196,45 @@ public Book isAvailable(String searchTerm) {
         BorrowRequest borrow=new BorrowRequest(student,book,start,end);
         borrowRequests.add(borrow);
         dataManager.saveRequest(borrowRequests);
+    }
+
+    public void accept(Librarian librarian,LocalDate startDate){
+        LocalDate endDate=startDate.plusDays(20);
+        Scanner scanner=new Scanner(System.in);
+
+        if (borrowRequests.isEmpty()) {
+            System.out.println("No borrow requests to review.");
+            return;
+        }
+
+        for (int i=0;i<borrowRequests.size();i++){
+            BorrowRequest borrow=borrowRequests.get(i);
+
+            if ((startDate.isEqual(borrow.getStart()) || startDate.isAfter(borrow.getStart()))
+            && (startDate.isEqual(borrow.getEnd()) || startDate.isBefore(borrow.getEnd()))){
+                System.out.println(borrow.getStudent().getName() +","+ borrow.getStudent().getStudentId() +","+ borrow.getBook().getName() +","+ borrow.getBook().getAuthor());
+                System.out.println("Do you want accept it?  (y/n)?");
+                String input=scanner.nextLine();
+                if (input.equals("y")){
+                    AcceptBorrow accept=new AcceptBorrow(borrow,librarian,startDate,endDate);
+                    borrowRequests.remove(borrowRequests.get(i));
+                    acceptBorrows.add(accept);
+                    for (Book book : books){
+                        if (book.getName().equals(borrow.getBook().getName())){
+                            book.setCount(book.getCount()-1);
+                            saving();
+                        }
+                    }
+                    System.out.println("Accept request");
+                } else if (input.equals("n")){
+                    borrowRequests.remove(i);
+                    System.out.println("Not accept request");
+                } else {
+                    System.out.println("Invalid choice!Please try again");
+                }
+            }
+        }
+        dataManager.saveRequest(borrowRequests);
+        dataManager.saveAccept(acceptBorrows);
     }
 }
