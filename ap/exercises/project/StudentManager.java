@@ -6,10 +6,15 @@ import java.util.List;
 public class StudentManager {
     private List<Student> students;
     private DataManager dataManager;
+    private BorrowRequest borrowRequest;
 
     public StudentManager() {
         this.students = new ArrayList<>();
         this.dataManager=new DataManager();
+    }
+
+    public StudentManager(BorrowRequest borrowRequest){
+        this.borrowRequest=borrowRequest;
     }
 
     public void registerStudent(String name, String studentId, String username, String password) {
@@ -59,4 +64,5 @@ public class StudentManager {
     public void loading(){
         dataManager.loadStudents(students);
     }
+
 }

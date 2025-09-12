@@ -3,6 +3,8 @@ package ap.exercises.project;
 import java.io.*;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,6 +13,7 @@ public class DataManager {
     String filepath1="student.txt";
     String filepath2="librarian.txt";
     String filepath3="book.txt";
+    String filepath4="Requests.txt";
 
     public void saveStudents(List<Student> students){
         try(PrintWriter writer=new PrintWriter(new FileWriter(filepath1))){
@@ -46,7 +49,7 @@ public class DataManager {
     public void saveLibrarian(List<Librarian> librarians){
         try(PrintWriter writer=new PrintWriter(new FileWriter(filepath2))){
             for (Librarian librarian : librarians){
-                writer.println(librarian.getUserename() +","+ librarian.getPassword());
+                writer.println(librarian.getUsername() +","+ librarian.getPassword());
             }
         } catch (IOException e){
             System.out.println("Error to save librarians"+ e.getMessage());
@@ -98,6 +101,41 @@ public class DataManager {
                 String[] parts=line.split(",");
                 if (parts.length==5){
                     books.add(new Book(parts[0].trim(),parts[1].trim(),Integer.parseInt(parts[2].trim()),Integer.parseInt(parts[3].trim()),Integer.parseInt(parts[4].trim())));
+                }
+            }
+        } catch (IOException e){
+            System.out.println("Error to load students"+ e.getMessage());
+        }
+    }
+
+    public void saveRequest(List<BorrowRequest> borrowRequests){
+        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath4))){
+            for (BorrowRequest borrowRequest : borrowRequests){
+                writer.println(borrowRequest.getStudent().getName() +","+ borrowRequest.getStudent().getStudentId() +","+ borrowRequest.getBook().getName() +","+ borrowRequest.getBook().getAuthor() +","+ borrowRequest.getStart() +","+ borrowRequest.getEnd());
+            }
+        } catch (IOException e){
+            System.out.println("Error to save librarians"+ e.getMessage());
+        }
+    }
+
+    public void loadRequest(List<BorrowRequest> borrowRequests){
+        File file=new File(filepath4);
+
+        if (!file.exists()){
+            System.out.println("Not found data");
+            return;
+        }
+
+        DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try (Scanner scanner=new Scanner(file)){
+            while (scanner.hasNextLine()){
+                String line=scanner.nextLine().trim();
+                String[] parts=line.split(",");
+                if (parts.length==6){
+                    Student student=new Student(parts[0].trim(),parts[1].trim());
+                    Book book=new Book(parts[2].trim(),parts[3].trim());
+                    borrowRequests.add(new BorrowRequest(student,book, LocalDate.parse(parts[4].trim(),dateTimeFormatter),LocalDate.parse(parts[5].trim(),dateTimeFormatter)));
                 }
             }
         } catch (IOException e){

@@ -1,16 +1,19 @@
 package ap.exercises.project;
 
-public class Student {
+public class Student extends Person{
     private String name;
     private String studentId;
-    private String username;
-    private String password;
 
     public Student(String name, String studentId, String username, String password) {
+        super(username,password);
         this.name = name;
         this.studentId = studentId;
-        this.username = username;
-        this.password = password;
+    }
+
+    public Student(String name,String studentId){
+        super("Maryam","1111");
+        this.name=name;
+        this.studentId=studentId;
     }
 
     public String getName() {
@@ -21,26 +24,11 @@ public class Student {
         return studentId;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setUsername(String username){
-        this.username=username;
-    }
-
-    public void setPassword(String password){
-        this.password=password;
-    }
-
     @Override
     public String toString() {
         return "Name: " + name +
                 " | Student ID: " + studentId +
-                " | Username: " + username;
+                " | Username: " + getUsername() +
+                " | password: " + getPassword();
     }
 }

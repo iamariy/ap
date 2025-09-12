@@ -1,24 +1,18 @@
 package ap.exercises.project;
 
-public class Manager {
-    private String username;
-    private String password;
+public class Manager extends Person{
 
     public Manager(String username,String password){
-        this.username="manager";
-        this.password="1";
+        super(username,password);
     }
 
-    public String getUsername(){
-        return username;
-    }
-
-    public String getPassword(){
-        return password;
+    public Manager(){
+        super("Manager","1");
     }
 
     @Override
     public String toString(){
-        return "username" +username+ "password" +password;
+        return "username: " +getUsername()+
+                " |password: " +getPassword();
     }
 }

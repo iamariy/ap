@@ -25,7 +25,7 @@ public class LibrarianManager {
 
     public Librarian authenticateLibrarian(String username, String password) {
         return librarians.stream()
-                .filter(l -> l.getUserename().equals(username) && l.getPassword().equals(password))
+                .filter(l -> l.getUsername().equals(username) && l.getPassword().equals(password))
                 .findFirst()
                 .orElse(null);
     }
@@ -39,6 +39,6 @@ public class LibrarianManager {
     }
 
     private boolean isUsernameTaken(String username) {
-        return librarians.stream().anyMatch(l -> l.getUserename().equals(username));
+        return librarians.stream().anyMatch(l -> l.getUsername().equals(username));
     }
 }

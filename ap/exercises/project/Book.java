@@ -15,6 +15,11 @@ public class Book {
         this.count=count;
     }
 
+    public Book(String name,String author){
+        this.name=name;
+        this.author=author;
+    }
+
     public String getName(){
         return name;
     }
@@ -53,7 +58,10 @@ public class Book {
 
     @Override
     public String toString(){
-        return "name" +name+ "author" +author+ "year" +year+ "pagecounter" +pagecounter;
+        return "name: " +name+
+                " | author: " +author+
+                " | year: " +year+
+                " | page counter: " +pagecounter;
     }
 
 }

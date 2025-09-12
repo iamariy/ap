@@ -127,6 +127,7 @@ public class MenuHandler {
 
     private void displayLoggedInStudentMenu() {
         librarySystem.loadBooks();
+        librarySystem.load();
 
         while (currentUser != null) {
             System.out.println("\n=== Student Dashboard ===");
@@ -300,7 +301,7 @@ public class MenuHandler {
         currentUsre2=librarySystem.authenticateLibrarian(username,password);
 
         if (currentUsre2!=null){
-            System.out.println("Login successful,welcome!\n Librarian"+ currentUsre2.getUserename());
+            System.out.println("Login successful,welcome!\n Librarian"+ currentUsre2);
             librarianMenu();
         } else {
             System.out.println("Invalid username or password.Please try again!");

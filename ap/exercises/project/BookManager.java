@@ -1,5 +1,6 @@
 package ap.exercises.project;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,13 +8,17 @@ import java.util.Scanner;
 public class BookManager {
     private List<Book> books;
     private DataManager dataManager;
-//    private Book book;
+    private List<BorrowRequest> borrowRequests;
 
     public BookManager(){
         this.books=new ArrayList<>();
         this.dataManager=new DataManager();
-//        this.books=books;
+        this.borrowRequests=new ArrayList<>();
     }
+
+//    public BookManager(BorrowRequest borrowRequest){
+//        this.borrowRequest=borrowRequest;
+//    }
 
     public void addBook(String name,String author,int year,int pagecounter,int count){
         Book newBook=new Book(name,author,year,pagecounter,count);
@@ -30,6 +35,10 @@ public class BookManager {
 
     public void loading(){
         dataManager.loadBooks(books);
+    }
+
+    public void loadRequest(){
+        dataManager.loadRequest(borrowRequests);
     }
 
     public void searching(String name){
@@ -139,26 +148,67 @@ public class BookManager {
         }
     }
 
-    public void isAvailable() {
-        Scanner scanner = new Scanner(System.in);
-        boolean found=false;
+//    public Book isAvailable(String name) {
+////        Scanner scanner = new Scanner(System.in);
+////        boolean found=false;
+//
+//        for (Book book : books) {
+//            if (name.equals(book.getName()) || name.equals(book.getAuthor()) || name.equals(Integer.toString(book.getYear()))) {
+//                System.out.println("Book name is: " + book.getName() + " Author is: " + book.getAuthor() + " Year is: " + book.getYear() + " Page count is: " + book.getPagecounter());
+//                if (book.getCount() > 0) {
+//                    System.out.println("Book is available!");
+//                } else if (book.getCount() == 0) {
+//                    System.out.println("Book is not available!");
+//                }
+////                found=true;
+////                break;
+////            } if (!found){
+//                System.out.println("Book is not registered!");
+////            }
+//        }
+//    }
 
-        System.out.println("Enter a thing for search");
-        String name = scanner.nextLine();
 
-        for (Book book : books) {
-            if (name.equals(book.getName()) || name.equals(book.getAuthor()) || name.equals(Integer.toString(book.getYear()))) {
-                System.out.println("Book name is: " + book.getName() + " Author is: " + book.getAuthor() + " Year is: " + book.getYear() + " Page count is: " + book.getPagecounter());
-                if (book.getCount() > 0) {
-                    System.out.println("Book is available!");
-                } else if (book.getCount() == 0) {
-                    System.out.println("Book is not available!");
-                }
-                found=true;
-                break;
-            } if (!found){
-                System.out.println("Book is not registered!");
+public Book isAvailable(String searchTerm) {
+    for (Book book : books) {
+        if (searchTerm.equals(book.getName()) ||
+                searchTerm.equals(book.getAuthor()) ||
+                searchTerm.equals(Integer.toString(book.getYear()))) {
+
+            System.out.println("Book name is: " + book.getName() +
+                    " Author is: " + book.getAuthor() +
+                    " Year is: " + book.getYear() +
+                    " Page count is: " + book.getPagecounter());
+
+            if (book.getCount() > 0) {
+                System.out.println("Book is available!");
+                return book; 
+            } else {
+                System.out.println("Book is not available!");
+                return null;
             }
         }
+    }
+    System.out.println("Book is not registered!");
+    return null;
+}
+
+    public void reqests(Student student, LocalDate start){
+        Scanner scanner=new Scanner(System.in);
+
+        System.out.println("Enter book name");
+        String name=scanner.nextLine();
+
+        Book book=isAvailable(name);
+
+        if (book == null) {
+            return;
+        }
+
+        LocalDate end=start.plusDays(1);
+
+        BorrowRequest borrow=new BorrowRequest(student,book,start,end);
+        borrowRequests.add(borrow);
+        dataManager.saveRequest(borrowRequests);
     }
 }

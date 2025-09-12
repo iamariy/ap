@@ -1,5 +1,6 @@
 package ap.exercises.project;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class LibrarySystem {
@@ -60,7 +61,7 @@ public class LibrarySystem {
     }
 
     public void borrowBook(Student student) {
-        System.out.println("Not implemented.");
+        bookManager.reqests(student,LocalDate.now());
     }
 
     public void returnBook(Student student) {
@@ -68,7 +69,12 @@ public class LibrarySystem {
     }
 
     public void displayAvailableBooks() {
-        bookManager.isAvailable();
+        Scanner scanner=new Scanner(System.in);
+
+        System.out.println("Enter book name");
+        String name=scanner.nextLine();
+
+        bookManager.isAvailable(name);
     }
 
     public void start() {
@@ -157,6 +163,10 @@ public class LibrarySystem {
                     System.out.println("Invalid number.Please try again!");
             }
         }
+    }
+
+    public void load(){
+        bookManager.loadRequest();
     }
 
     public static void main(String[] args) {
