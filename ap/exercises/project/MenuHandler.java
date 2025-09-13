@@ -173,6 +173,9 @@ public class MenuHandler {
 
     private void managerMenu(){
         librarySystem.loadLibrarians();
+        librarySystem.loadBooks();
+        librarySystem.loadAllA();
+        librarySystem.loadAcceptReturn();
 
         System.out.println("=== Manager Menu ===");
 
@@ -190,6 +193,11 @@ public class MenuHandler {
                 addLibrarian();
                 librarySystem.saveLibraians();
                 break;
+                case 2:
+                    System.out.println("Enter username");
+                    String str=scanner.nextLine();
+                    librarySystem.librarianHistory(str);
+                    break;
                 case 5:
                     System.out.println("Exiting...");
                     return;

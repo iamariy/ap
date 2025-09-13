@@ -356,4 +356,25 @@ public class BookManager {
         return count;
     }
 
+    public void librarianHistory(String username){
+        int sum1=0,sum2=0,sum3=0;
+
+        for (Book book : books){
+            if (book.getLibrarian().getUsername().equals(username)){
+                sum1+=book.getCount();
+            }
+        }
+        for (AcceptBorrow all : allAccepts){
+            if (all.getLibrarian().getUsername().equals(username)){
+                sum2++;
+            }
+        }
+        for (AcceptReturn acceptReturn : acceptReturns){
+            if (acceptReturn.getLibrarian().getUsername().equals(username)){
+                sum3++;
+            }
+        }
+        System.out.println("Count of book add: " +sum1+ "\nAll accept borrow: " +sum2+ "\nAll return borrow: " +sum3);
+    }
+
 }

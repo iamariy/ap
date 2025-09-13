@@ -224,6 +224,10 @@ public class LibrarySystem {
         bookManager.loadAcceptReturn();
     }
 
+    public void librarianHistory(String username){
+        bookManager.librarianHistory(username);
+    }
+
     public static void main(String[] args) {
         LibrarySystem system = new LibrarySystem();
         system.start();
