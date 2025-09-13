@@ -376,4 +376,21 @@ public class BookManager {
         }
         System.out.println("Count of book add: " +sum1+ "\nAll accept borrow: " +sum2+ "\nAll return borrow: " +sum3);
     }
+
+    public int requestCounter(){
+        return this.allRequests.size();
+    }
+
+    public long daysCounter(){
+        long count=0;
+
+        for (AcceptBorrow all : allAccepts){
+            for (AcceptReturn acceptReturn : acceptReturns){
+                long days=Math.abs(ChronoUnit.DAYS.between(acceptReturn.getReturned(),all.getEndDate()));
+                count+=days;
+            }
+        }
+        return count;
+
+    }
 }

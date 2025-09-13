@@ -228,6 +228,14 @@ public class LibrarySystem {
         bookManager.librarianHistory(username);
     }
 
+    public int requestCounter(){
+        return this.bookManager.requestCounter();
+    }
+
+    public long daysCounter(){
+        return bookManager.daysCounter();
+    }
+
     public static void main(String[] args) {
         LibrarySystem system = new LibrarySystem();
         system.start();

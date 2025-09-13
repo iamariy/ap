@@ -176,6 +176,7 @@ public class MenuHandler {
         librarySystem.loadBooks();
         librarySystem.loadAllA();
         librarySystem.loadAcceptReturn();
+        librarySystem.loadAllR();
 
         System.out.println("=== Manager Menu ===");
 
@@ -197,6 +198,9 @@ public class MenuHandler {
                     System.out.println("Enter username");
                     String str=scanner.nextLine();
                     librarySystem.librarianHistory(str);
+                    break;
+                case 3:
+                    System.out.println("All requests: " +librarySystem.requestCounter()+ "\nAll loans: " +librarySystem.getLoanCount()+ "\nDays count: " +librarySystem.daysCounter());
                     break;
                 case 5:
                     System.out.println("Exiting...");
