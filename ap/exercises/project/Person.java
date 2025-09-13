@@ -29,5 +29,4 @@ public class Person implements LogOut{
     public String toString(){
         return "username" +username+ "password" +password;
     }
-
 }

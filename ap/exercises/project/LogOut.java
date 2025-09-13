@@ -11,4 +11,5 @@ public interface LogOut {
     void setUsername(String username);
 
     void setPassword(String password);
+
 }

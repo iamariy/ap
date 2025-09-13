@@ -216,6 +216,7 @@ public class BookManager implements Connection,HandleData,Getter{
         BorrowRequest borrow=new BorrowRequest(student,book,start,end);
         borrowRequests.add(borrow);
         allRequests.add(borrow);
+        System.out.println("Sent borrow request");
         dataManager.saveRequest(borrowRequests);
         dataManager.saveRequestAll(allRequests);
     }
@@ -273,6 +274,7 @@ public class BookManager implements Connection,HandleData,Getter{
                 returnBooks.add(returnBook);
                 dataManager.saveReturn(returnBooks);
                 found = true;
+                System.out.println("Sent return request");
 
                 break;
             }
@@ -310,6 +312,8 @@ public class BookManager implements Connection,HandleData,Getter{
                 }
             }
         }
+        System.out.println("Backed book");
+
         dataManager.saveReturn(returnBooks);
         dataManager.saveReturnAccept(acceptReturns);
         dataManager.saveAccept(acceptBorrows);

@@ -8,5 +8,4 @@ public interface Getter {
     int delay();
     int requestCounter();
     long daysCounter();
-
 }

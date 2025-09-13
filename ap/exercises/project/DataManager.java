@@ -333,5 +333,4 @@ public class DataManager {
             System.out.println("Error to loadRequest students"+ e.getMessage());
         }
     }
-
 }

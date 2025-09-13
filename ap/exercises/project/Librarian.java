@@ -16,5 +16,4 @@ public class Librarian extends Person{
         return "username: " +getUsername()+
                 " | password: " +getPassword();
     }
-
 }

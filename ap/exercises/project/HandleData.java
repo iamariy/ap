@@ -10,4 +10,5 @@ public interface HandleData {
     void loadAllA();
     void loadReturn();
     void loadAcceptReturn();
+
 }

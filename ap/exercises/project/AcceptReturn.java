@@ -30,5 +30,4 @@ public class AcceptReturn {
                 " | Librarian: " +librarian+
                 " | Return date: " +returned;
     }
-
 }
