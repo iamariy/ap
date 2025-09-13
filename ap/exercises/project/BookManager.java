@@ -386,7 +386,7 @@ public class BookManager {
 
         for (AcceptBorrow all : allAccepts){
             for (AcceptReturn acceptReturn : acceptReturns){
-                long days=Math.abs(ChronoUnit.DAYS.between(acceptReturn.getReturned(),all.getEndDate()));
+                long days=Math.abs(ChronoUnit.DAYS.between(acceptReturn.getReturned(),all.getStartDate()));
                 count+=days;
             }
         }
