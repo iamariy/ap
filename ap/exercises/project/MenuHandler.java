@@ -1,7 +1,6 @@
 package ap.exercises.project;
 
 
-// MenuHandler.java
 import java.util.Scanner;
 
 public class MenuHandler {

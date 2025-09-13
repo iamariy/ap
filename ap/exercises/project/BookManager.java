@@ -26,9 +26,6 @@ public class BookManager {
         this.acceptReturns=new ArrayList<>();
     }
 
-//    public BookManager(BorrowRequest borrowRequest){
-//        this.borrowRequest=borrowRequest;
-//    }
 
     public void addBook(String name,String author,int year,int pagecounter,int count,Librarian librarian){
         Book newBook=new Book(name,author,year,pagecounter,count,librarian);
