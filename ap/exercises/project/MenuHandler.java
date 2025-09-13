@@ -126,7 +126,7 @@ public class MenuHandler {
 
     private void displayLoggedInStudentMenu() {
         librarySystem.loadBooks();
-        librarySystem.load();
+        librarySystem.loadRequest();
         librarySystem.loadAccept();
         librarySystem.loadAllR();
         librarySystem.loadReturn();
@@ -192,7 +192,7 @@ public class MenuHandler {
             switch (choice){
                 case 1:
                 addLibrarian();
-                librarySystem.saveLibraians();
+                librarySystem.saveLibrarians();
                 break;
                 case 2:
                     System.out.println("Enter username");
@@ -200,7 +200,13 @@ public class MenuHandler {
                     librarySystem.librarianHistory(str);
                     break;
                 case 3:
-                    System.out.println("All requests: " +librarySystem.requestCounter()+ "\nAll loans: " +librarySystem.getLoanCount()+ "\nDays count: " +librarySystem.daysCounter());
+                    System.out.println("All requests: " +librarySystem.requestCounter()+ "\nAll getLoanCount: " +librarySystem.getLoanCount()+ "\nDays count: " +librarySystem.daysCounter());
+                    break;
+                case 4:
+                    System.out.println("History getLoanCount for students");
+                    librarySystem.print();
+                    System.out.println("All getLoanCount are: " +librarySystem.getLoanCount()+ "\nAll active getLoanCount: " +librarySystem.activeLoans()+ "\nDelay to back loan: " +librarySystem.delay());
+                    librarySystem.delayStudents();
                     break;
                 case 5:
                     System.out.println("Exiting...");
@@ -242,7 +248,7 @@ public class MenuHandler {
 
     private void librarianMenu() {
         librarySystem.loadBooks();
-        librarySystem.load();
+        librarySystem.loadRequest();
         librarySystem.loadAccept();
         librarySystem.loadLibrarians();
         librarySystem.loadStudents();
@@ -268,7 +274,7 @@ public class MenuHandler {
             switch (choice) {
                 case 1:
                     librarySystem.editLibrarianPassword(currentUsre2);
-                    librarySystem.saveLibraians();
+                    librarySystem.saveLibrarians();
                     break;
                 case 2:
                     System.out.println("=== Add book ===");
@@ -304,18 +310,18 @@ public class MenuHandler {
                     librarySystem.saveBooks();
                     break;
                 case 5:
-                    librarySystem.accepting(currentUsre2);
+                    librarySystem.accept(currentUsre2);
                     break;
                 case 6:
-                    System.out.println("History loans for students");
+                    System.out.println("History getLoanCount for students");
                     librarySystem.print();
-                    System.out.println("All loans are: " +librarySystem.getLoanCount()+ "\nAll active loans: " +librarySystem.getActive()+ "\nDelay to back loan: " +librarySystem.delay());
+                    System.out.println("All getLoanCount are: " +librarySystem.getLoanCount()+ "\nAll active getLoanCount: " +librarySystem.activeLoans()+ "\nDelay to back loan: " +librarySystem.delay());
                     break;
                 case 7:
                     librarySystem.activing();
                     break;
                 case 8:
-                    librarySystem.returned(currentUsre2);
+                    librarySystem.acceptReturn(currentUsre2);
                     break;
                     case 9:
                     System.out.println("Exiting...");
@@ -372,7 +378,7 @@ public class MenuHandler {
                     break;
                 case 3:
                     displayStudentCount();
-                    System.out.println("All books are: " +librarySystem.getBookCount()+ "\nAll loans are: " +librarySystem.getLoanCount()+ "\nAll active loans are: " +librarySystem.getActive());
+                    System.out.println("All books are: " +librarySystem.getBookCount()+ "\nAll getLoanCount are: " +librarySystem.getLoanCount()+ "\nAll active getLoanCount are: " +librarySystem.activeLoans());
                     break;
                 case 4:
                     System.out.println("Exiting...");

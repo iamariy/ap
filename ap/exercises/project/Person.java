@@ -30,5 +30,4 @@ public class Person implements LogOut{
         return "username" +username+ "password" +password;
     }
 
-
 }

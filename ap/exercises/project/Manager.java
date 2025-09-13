@@ -15,4 +15,5 @@ public class Manager extends Person{
         return "username: " +getUsername()+
                 " |password: " +getPassword();
     }
+
 }

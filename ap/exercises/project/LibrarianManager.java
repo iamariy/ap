@@ -41,4 +41,5 @@ public class LibrarianManager {
     private boolean isUsernameTaken(String username) {
         return librarians.stream().anyMatch(l -> l.getUsername().equals(username));
     }
+
 }

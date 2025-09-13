@@ -2,11 +2,9 @@ package ap.exercises.project;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
-public class BookManager {
+public class BookManager implements Connection,HandleData,Getter{
     private List<Book> books;
     private DataManager dataManager;
     private List<BorrowRequest> borrowRequests;
@@ -15,6 +13,7 @@ public class BookManager {
     private List<AcceptBorrow> allAccepts;
     private List<ReturnBook> returnBooks;
     private List<AcceptReturn> acceptReturns;
+    private Scanner scanner;
 
     public BookManager(){
         this.books=new ArrayList<>();
@@ -25,9 +24,10 @@ public class BookManager {
         this.allAccepts=new ArrayList<>();
         this.returnBooks=new ArrayList<>();
         this.acceptReturns=new ArrayList<>();
+        this.scanner=new Scanner(System.in);
     }
 
-
+    @Override
     public void addBook(String name,String author,int year,int pagecounter,int count,Librarian librarian){
         Book newBook=new Book(name,author,year,pagecounter,count,librarian);
 
@@ -35,40 +35,40 @@ public class BookManager {
             books.add(newBook);
             System.out.println("book %d is added successfully!");
     }
-
-    public void saving(){
+    @Override
+    public void saveBooks(){
         dataManager.saveBooks(books);
     }
-
-    public void loading(){
+    @Override
+    public void loadBooks(){
         dataManager.loadBooks(books);
     }
-
+    @Override
     public void loadRequest(){
         dataManager.loadRequest(borrowRequests);
     }
-
+    @Override
     public void loadAccept(){
         dataManager.loadAccept(acceptBorrows);
     }
-
+    @Override
     public void loadAllR(){
         dataManager.loadRequestAll(allRequests);
     }
-
+    @Override
     public void loadAllA(){
         dataManager.loadAcceptAll(allAccepts);
     }
-
+    @Override
     public void loadReturn(){
         dataManager.loadReturn(returnBooks);
     }
-
+    @Override
     public void loadAcceptReturn(){
         dataManager.loadReturnAccept(acceptReturns);
     }
-
-    public void searching(String name){
+    @Override
+    public void searchBook(String name){
         boolean found=false;
 
         for (Book book : books) {
@@ -89,7 +89,6 @@ public class BookManager {
 
         for (Book book : books){
             if (name.equals(book.getName())){
-                Scanner scanner=new Scanner(System.in);
                 System.out.println("Enter new name");
                 String nm=scanner.nextLine();
                 book.setName(nm);
@@ -99,7 +98,7 @@ public class BookManager {
         }
         if (found){
             System.out.println("Book is updated successfully!");
-            saving();
+            saveBooks();
         }
         else {
             System.out.println("Book is not found");
@@ -112,7 +111,6 @@ public class BookManager {
 
         for (Book book : books){
             if (name.equals(book.getName())){
-                Scanner scanner=new Scanner(System.in);
                 System.out.println("Enter new author");
                 String na=scanner.nextLine();
                 book.setAuthor(na);
@@ -122,7 +120,7 @@ public class BookManager {
         }
         if (found){
             System.out.println("Book is updated successfully!");
-            saving();
+            saveBooks();
         }
         else {
             System.out.println("Book is not found");
@@ -135,7 +133,6 @@ public class BookManager {
 
         for (Book book : books){
             if (name.equals(book.getName())){
-                Scanner scanner=new Scanner(System.in);
                 System.out.println("Enter new year");
                 int ny=scanner.nextInt();
                 book.setYear(ny);
@@ -145,7 +142,7 @@ public class BookManager {
         }
         if (found){
             System.out.println("Book is updated successfully!");
-            saving();
+            saveBooks();
         }
         else {
             System.out.println("Book is not found");
@@ -158,7 +155,6 @@ public class BookManager {
 
         for (Book book : books){
             if (name.equals(book.getName())){
-                Scanner scanner=new Scanner(System.in);
                 System.out.println("Enter new page count");
                 int nc=scanner.nextInt();
                 book.setPagecounter(nc);
@@ -168,7 +164,7 @@ public class BookManager {
         }
         if (found){
             System.out.println("Book is updated successfully!");
-            saving();
+            saveBooks();
         }
         else {
             System.out.println("Book is not found");
@@ -199,13 +195,12 @@ public class BookManager {
         return null;
     }
 
-    public void reqests(Student student, LocalDate start){
+    public void borrowBook(Student student, LocalDate start){
         if (student.isActive()==false) {
             System.out.println("You can't borrow book");
             return;
         }
 
-        Scanner scanner=new Scanner(System.in);
 
         System.out.println("Enter book name");
         String name=scanner.nextLine();
@@ -225,9 +220,8 @@ public class BookManager {
         dataManager.saveRequestAll(allRequests);
     }
 
-    public void accept(Librarian librarian,LocalDate startDate){
+    public void accept(Librarian librarian, LocalDate startDate){
         LocalDate endDate=startDate.plusDays(20);
-        Scanner scanner=new Scanner(System.in);
 
         if (borrowRequests.isEmpty()) {
             System.out.println("No borrow requests to review.");
@@ -250,7 +244,7 @@ public class BookManager {
                     for (Book book : books){
                         if (book.getName().equals(borrow.getBook().getName())){
                             book.setCount(book.getCount()-1);
-                            saving();
+                            saveBooks();
                         }
                     }
                     System.out.println("Accept request");
@@ -268,7 +262,6 @@ public class BookManager {
     }
 
     public void returnBook(Student student,LocalDate returnDate) {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter book name");
         String str = scanner.nextLine();
 
@@ -313,7 +306,7 @@ public class BookManager {
             for (Book book : books){
                 if (book.getName().equals(returns.getAcceptBorrow().getBorrowRequest().getBook().getName())){
                     book.setCount(book.getCount()+1);
-                    saving();
+                    saveBooks();
                 }
             }
         }
@@ -321,29 +314,29 @@ public class BookManager {
         dataManager.saveReturnAccept(acceptReturns);
         dataManager.saveAccept(acceptBorrows);
     }
-
-    public int counters(){
+    @Override
+    public int getBookCount(){
         int sum=0;
         for (Book book : books){
             sum+=book.getCount();
         }
         return sum;
     }
-
-    public int loans(){
+    @Override
+    public int getLoanCount(){
         return allAccepts.size();
     }
-
+    @Override
     public int activeLoans(){
         return this.acceptBorrows.size();
     }
-
+    @Override
     public void print(){
         for (AcceptBorrow all : allAccepts){
             System.out.println("Student name: " +all.getBorrowRequest().getStudent().getName()+ " Student Id: " +all.getBorrowRequest().getStudent().getStudentId()+ " Book name: " +all.getBorrowRequest().getBook().getName()+ " Author name: " +all.getBorrowRequest().getBook().getAuthor());
         }
     }
-
+    @Override
     public int delay(){
         int count=0;
         for (AcceptBorrow all : allAccepts){
@@ -355,7 +348,7 @@ public class BookManager {
         }
         return count;
     }
-
+    @Override
     public void librarianHistory(String username){
         int sum1=0,sum2=0,sum3=0;
 
@@ -376,11 +369,11 @@ public class BookManager {
         }
         System.out.println("Count of book add: " +sum1+ "\nAll accept borrow: " +sum2+ "\nAll return borrow: " +sum3);
     }
-
+    @Override
     public int requestCounter(){
         return this.allRequests.size();
     }
-
+    @Override
     public long daysCounter(){
         long count=0;
 
@@ -392,5 +385,31 @@ public class BookManager {
         }
         return count;
 
+    }
+    @Override
+    public void delayStudents() {
+        Map<Student, Long> studentDelayMap = new HashMap<>();
+
+        for (AcceptBorrow all : allAccepts) {
+            for (AcceptReturn acceptReturn : acceptReturns) {
+                    long daysLate = ChronoUnit.DAYS.between(all.getEndDate(), acceptReturn.getReturned());
+                    if (daysLate > 0) {
+                        studentDelayMap.merge(all.getBorrowRequest().getStudent(), daysLate, Long::sum);
+
+                }
+            }
+        }
+
+        List<Map.Entry<Student, Long>> top10 = studentDelayMap.entrySet().stream()
+                .sorted(Map.Entry.<Student, Long>comparingByValue(Comparator.reverseOrder()))
+                .limit(10)
+                .toList();
+
+        System.out.println("Top 10 late students:");
+        for (Map.Entry<Student, Long> entry : top10) {
+            Student s = entry.getKey();
+            long totalLateDays = entry.getValue();
+            System.out.println(s.getName() + " (ID: " + s.getStudentId() + ") → Total late days: " + totalLateDays);
+        }
     }
 }

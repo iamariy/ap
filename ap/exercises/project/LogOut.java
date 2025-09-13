@@ -1,6 +1,7 @@
 package ap.exercises.project;
 
 public interface LogOut {
+
     String getUsername();
 
     String getPassword();

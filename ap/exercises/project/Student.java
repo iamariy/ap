@@ -42,4 +42,5 @@ public class Student extends Person{
                 " | password: " + getPassword() +
                 " | active: " +isActive();
     }
+
 }

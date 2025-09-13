@@ -47,7 +47,7 @@ public class DataManager {
                 }
             }
         } catch (IOException e){
-            System.out.println("Error to load students"+ e.getMessage());
+            System.out.println("Error to loadRequest students"+ e.getMessage());
         }
     }
 
@@ -78,14 +78,14 @@ public class DataManager {
                 }
             }
         } catch (IOException e){
-            System.out.println("Error to load librarians"+ e.getMessage());
+            System.out.println("Error to loadRequest librarians"+ e.getMessage());
         }
     }
 
     public void saveBooks(List<Book> books){
         try(PrintWriter writer=new PrintWriter(new FileWriter(filepath3))){
             for (Book book : books){
-                writer.println(book.getName() +","+ book.getAuthor() +","+ book.getYear() +","+ book.getPagecounter() +","+ book.getCount());
+                writer.println(book.getName() +","+ book.getAuthor() +","+ book.getYear() +","+ book.getPagecounter() +","+ book.getCount() +","+ book.getLibrarian().getUsername());
             }
         } catch (IOException e){
             System.out.println("Error to save books"+ e.getMessage());
@@ -104,12 +104,13 @@ public class DataManager {
             while (scanner.hasNextLine()){
                 String line=scanner.nextLine().trim();
                 String[] parts=line.split(",");
-                if (parts.length==5){
-                    books.add(new Book(parts[0].trim(),parts[1].trim(),Integer.parseInt(parts[2].trim()),Integer.parseInt(parts[3].trim()),Integer.parseInt(parts[4].trim())));
+                if (parts.length==6){
+                    Librarian librarian=new Librarian(parts[5].trim());
+                    books.add(new Book(parts[0].trim(),parts[1].trim(),Integer.parseInt(parts[2].trim()),Integer.parseInt(parts[3].trim()),Integer.parseInt(parts[4].trim()),librarian));
                 }
             }
         } catch (IOException e){
-            System.out.println("Error to load students"+ e.getMessage());
+            System.out.println("Error to loadRequest students"+ e.getMessage());
         }
     }
 
@@ -144,7 +145,7 @@ public class DataManager {
                 }
             }
         } catch (IOException e){
-            System.out.println("Error to load students"+ e.getMessage());
+            System.out.println("Error to loadRequest students"+ e.getMessage());
         }
     }
 
@@ -182,7 +183,7 @@ public class DataManager {
                 }
             }
         } catch (IOException e){
-            System.out.println("Error to load students"+ e.getMessage());
+            System.out.println("Error to loadRequest students"+ e.getMessage());
         }
     }
 
@@ -227,7 +228,7 @@ public class DataManager {
                 }
             }
         } catch (IOException e){
-            System.out.println("Error to load students"+ e.getMessage());
+            System.out.println("Error to loadRequest students"+ e.getMessage());
         }
     }
 
@@ -255,7 +256,7 @@ public class DataManager {
                 }
             }
         } catch (IOException e){
-            System.out.println("Error to load students"+ e.getMessage());
+            System.out.println("Error to loadRequest students"+ e.getMessage());
         }
     }
 
@@ -291,7 +292,7 @@ public class DataManager {
                 }
             }
         } catch (IOException e){
-            System.out.println("Error to load students"+ e.getMessage());
+            System.out.println("Error to loadRequest students"+ e.getMessage());
         }
     }
 
@@ -329,7 +330,7 @@ public class DataManager {
                 }
             }
         } catch (IOException e){
-            System.out.println("Error to load students"+ e.getMessage());
+            System.out.println("Error to loadRequest students"+ e.getMessage());
         }
     }
 

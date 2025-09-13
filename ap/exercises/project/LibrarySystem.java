@@ -3,32 +3,34 @@ package ap.exercises.project;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class LibrarySystem {
+public class LibrarySystem implements Connection,HandleData,Getter{
     private StudentManager studentManager;
     private MenuHandler menuHandler;
     private LibrarianManager librarianManager;
     private BookManager bookManager;
+    private Scanner scanner;
 
     public LibrarySystem() {
         this.studentManager = new StudentManager();
         this.menuHandler=new MenuHandler(this);
         this.librarianManager=new LibrarianManager();
         this.bookManager=new BookManager();
+        this.scanner=new Scanner(System.in);
     }
 
     public int getStudentCount() {
         return this.studentManager.getStudentCount();
     }
-
+    @Override
     public int getBookCount(){
-        return this.bookManager.counters();
+        return this.bookManager.getBookCount();
     }
-
+    @Override
     public int getLoanCount(){
-        return this.bookManager.loans();
+        return this.bookManager.getLoanCount();
     }
-
-    public int getActive(){
+    @Override
+    public int activeLoans(){
         return this.bookManager.activeLoans();
     }
 
@@ -47,7 +49,6 @@ public class LibrarySystem {
             System.out.println("2.Edit password: ");
             System.out.println("3.Exit");
 
-            Scanner scanner=new Scanner(System.in);
             System.out.println("Enter your choice");
             int choice=scanner.nextInt();
             scanner.nextLine();
@@ -73,7 +74,7 @@ public class LibrarySystem {
     }
 
     public void borrowBook(Student student) {
-        bookManager.reqests(student,LocalDate.now());
+        bookManager.borrowBook(student,LocalDate.now());
     }
 
     public void returnBook(Student student) {
@@ -81,7 +82,6 @@ public class LibrarySystem {
     }
 
     public void displayAvailableBooks() {
-        Scanner scanner=new Scanner(System.in);
 
         System.out.println("Enter book name");
         String name=scanner.nextLine();
@@ -105,7 +105,7 @@ public class LibrarySystem {
         librarianManager.addLibrarian(username,password);
     }
 
-    public void saveLibraians(){
+    public void saveLibrarians(){
         librarianManager.saving();
     }
 
@@ -118,31 +118,29 @@ public class LibrarySystem {
     }
 
     public void editLibrarianPassword(Librarian librarian){
-        Scanner scanner=new Scanner(System.in);
 
         System.out.println("Enter new password");
         String np=scanner.nextLine();
         librarian.setPassword(np);
     }
-
+    @Override
     public void addBook(String name,String author,int year,int pagecounter,int count,Librarian librarian){
         bookManager.addBook(name,author,year,pagecounter,count,librarian);
     }
-
+    @Override
     public void saveBooks(){
-        bookManager.saving();
+        bookManager.saveBooks();
     }
-
+    @Override
     public void loadBooks(){
-        bookManager.loading();
+        bookManager.loadBooks();
     }
-
+    @Override
     public void searchBook(String name){
-        bookManager.searching(name);
+        bookManager.searchBook(name);
     }
 
     public void editBooks(String name){
-        Scanner scanner=new Scanner(System.in);
 
         while (true){
             System.out.println("1.Edit book name");
@@ -178,62 +176,65 @@ public class LibrarySystem {
     }
 
     public void activing(){
-        Scanner scanner=new Scanner(System.in);
         System.out.println("Enter student id");
         String str=scanner.nextLine();
         studentManager.changeActiving(str);
     }
 
-    public void accepting(Librarian librarian){
+    public void accept(Librarian librarian){
         bookManager.accept(librarian,LocalDate.now());
     }
 
-    public void returned(Librarian librarian){
+    public void acceptReturn(Librarian librarian){
         bookManager.acceptReturn(librarian,LocalDate.now());
     }
-
+    @Override
     public void print(){
         bookManager.print();
     }
-
+    @Override
     public int delay(){
         return bookManager.delay();
     }
-
-    public void load(){
+    @Override
+    public void loadRequest(){
         bookManager.loadRequest();
     }
-
+    @Override
     public void loadAccept(){
         bookManager.loadAccept();
     }
-
+    @Override
     public void loadAllR(){
         bookManager.loadAllR();
     }
-
+    @Override
     public void loadAllA(){
         bookManager.loadAllA();
     }
-
+    @Override
     public void loadReturn(){
         bookManager.loadReturn();
     }
-
+    @Override
     public void loadAcceptReturn(){
         bookManager.loadAcceptReturn();
     }
-
+    @Override
     public void librarianHistory(String username){
         bookManager.librarianHistory(username);
     }
-
+    @Override
     public int requestCounter(){
         return this.bookManager.requestCounter();
     }
-
+    @Override
     public long daysCounter(){
         return bookManager.daysCounter();
+    }
+    @Override
+    public void delayStudents(){
+        bookManager.delayStudents();
     }
 
     public static void main(String[] args) {

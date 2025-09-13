@@ -6,13 +6,15 @@ public class Book {
     private int year;
     private int pagecounter;
     private int count;
+    private Librarian librarian;
 
-    public Book(String name, String author, int year,int pagecounter,int count){
+    public Book(String name, String author, int year,int pagecounter,int count,Librarian librarian){
         this.name=name;
         this.author=author;
         this.year=year;
         this.pagecounter=pagecounter;
         this.count=count;
+        this.librarian=librarian;
     }
 
     public Book(String name,String author){
@@ -40,6 +42,10 @@ public class Book {
         return count;
     }
 
+    public Librarian getLibrarian(){
+        return librarian;
+    }
+
     public void setName(String name){
         this.name=name;
     }
@@ -65,7 +71,9 @@ public class Book {
         return "name: " +name+
                 " | author: " +author+
                 " | year: " +year+
-                " | page counter: " +pagecounter;
+                " | page counter: " +pagecounter+
+                " | count: " +count+
+                " | librarian: " +librarian;
     }
 
 }
