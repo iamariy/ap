@@ -276,7 +276,7 @@ public class MenuHandler {
                     int count=scanner.nextInt();
                     scanner.nextLine();
 
-                    librarySystem.addBook(name,author,year,pagecount,count);
+                    librarySystem.addBook(name,author,year,pagecount,count,currentUsre2);
                     librarySystem.saveBooks();
                     break;
                 case 3:
@@ -334,6 +334,8 @@ public class MenuHandler {
         System.out.println("Welcome!");
         librarySystem.loadStudents();
         librarySystem.loadBooks();
+        librarySystem.loadAllA();
+        librarySystem.loadAccept();
 
         while (true){
             System.out.println("1.Number of students registered");
@@ -351,6 +353,10 @@ public class MenuHandler {
                     System.out.println("Enter book name");
                     String bookN=scanner.nextLine();
                     librarySystem.searchBook(bookN);
+                    break;
+                case 3:
+                    displayStudentCount();
+                    System.out.println("All books are: " +librarySystem.getBookCount()+ "\nAll loans are: " +librarySystem.getLoanCount()+ "\nAll active loans are: " +librarySystem.getActive());
                     break;
                 case 4:
                     System.out.println("Exiting...");

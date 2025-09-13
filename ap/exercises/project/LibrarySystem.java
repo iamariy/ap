@@ -20,6 +20,18 @@ public class LibrarySystem {
         return this.studentManager.getStudentCount();
     }
 
+    public int getBookCount(){
+        return this.bookManager.counters();
+    }
+
+    public int getLoanCount(){
+        return this.bookManager.loans();
+    }
+
+    public int getActive(){
+        return this.bookManager.activeLoans();
+    }
+
     public void registerStudent(String name, String studentId, String username, String password) {
         studentManager.registerStudent(name, studentId, username, password);
     }
@@ -113,8 +125,8 @@ public class LibrarySystem {
         librarian.setPassword(np);
     }
 
-    public void addBook(String name,String author,int year,int pagecounter,int count){
-        bookManager.addBook(name,author,year,pagecounter,count);
+    public void addBook(String name,String author,int year,int pagecounter,int count,Librarian librarian){
+        bookManager.addBook(name,author,year,pagecounter,count,librarian);
     }
 
     public void saveBooks(){

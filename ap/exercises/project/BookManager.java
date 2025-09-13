@@ -30,8 +30,8 @@ public class BookManager {
 //        this.borrowRequest=borrowRequest;
 //    }
 
-    public void addBook(String name,String author,int year,int pagecounter,int count){
-        Book newBook=new Book(name,author,year,pagecounter,count);
+    public void addBook(String name,String author,int year,int pagecounter,int count,Librarian librarian){
+        Book newBook=new Book(name,author,year,pagecounter,count,librarian);
 
 
             books.add(newBook);
@@ -305,6 +305,13 @@ public class BookManager {
             returnBooks.remove(returnBooks.get(i));
             acceptReturns.add(accept);
 
+            for (int j=0;j<acceptBorrows.size();j++){
+                AcceptBorrow acceptBorrow=acceptBorrows.get(j);
+                if (acceptBorrow.getBorrowRequest().getBook().getName().equals(accept.getReturnBook().getAcceptBorrow().getBorrowRequest().getBook().getName())){
+                    acceptBorrows.remove(acceptBorrows.get(j));
+                }
+            }
+
             for (Book book : books){
                 if (book.getName().equals(returns.getAcceptBorrow().getBorrowRequest().getBook().getName())){
                     book.setCount(book.getCount()+1);
@@ -314,6 +321,23 @@ public class BookManager {
         }
         dataManager.saveReturn(returnBooks);
         dataManager.saveReturnAccept(acceptReturns);
+        dataManager.saveAccept(acceptBorrows);
+    }
+
+    public int counters(){
+        int sum=0;
+        for (Book book : books){
+            sum+=book.getCount();
+        }
+        return sum;
+    }
+
+    public int loans(){
+        return allAccepts.size();
+    }
+
+    public int activeLoans(){
+        return this.acceptBorrows.size();
     }
 
 }
