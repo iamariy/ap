@@ -1,6 +1,7 @@
 package ap.exercises.project;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -335,6 +336,24 @@ public class BookManager {
 
     public int activeLoans(){
         return this.acceptBorrows.size();
+    }
+
+    public void print(){
+        for (AcceptBorrow all : allAccepts){
+            System.out.println("Student name: " +all.getBorrowRequest().getStudent().getName()+ " Student Id: " +all.getBorrowRequest().getStudent().getStudentId()+ " Book name: " +all.getBorrowRequest().getBook().getName()+ " Author name: " +all.getBorrowRequest().getBook().getAuthor());
+        }
+    }
+
+    public int delay(){
+        int count=0;
+        for (AcceptBorrow all : allAccepts){
+            for (AcceptReturn acceptReturn : acceptReturns){
+                if (ChronoUnit.DAYS.between(acceptReturn.getReturned(),all.getEndDate())<0){
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
 }

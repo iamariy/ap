@@ -294,6 +294,11 @@ public class MenuHandler {
                 case 5:
                     librarySystem.accepting(currentUsre2);
                     break;
+                case 6:
+                    System.out.println("History loans for students");
+                    librarySystem.print();
+                    System.out.println("All loans are: " +librarySystem.getLoanCount()+ "\nAll active loans: " +librarySystem.getActive()+ "\nDelay to back loan: " +librarySystem.delay());
+                    break;
                 case 7:
                     librarySystem.activing();
                     break;

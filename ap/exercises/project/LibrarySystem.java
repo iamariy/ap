@@ -192,6 +192,14 @@ public class LibrarySystem {
         bookManager.acceptReturn(librarian,LocalDate.now());
     }
 
+    public void print(){
+        bookManager.print();
+    }
+
+    public int delay(){
+        return bookManager.delay();
+    }
+
     public void load(){
         bookManager.loadRequest();
     }
