@@ -391,6 +391,7 @@ public class MenuHandler {
                 System.out.print("Invalid input. Please enter a number: ");
             }
         }
+
     }
 
 }

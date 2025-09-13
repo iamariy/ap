@@ -376,5 +376,4 @@ public class BookManager {
         }
         System.out.println("Count of book add: " +sum1+ "\nAll accept borrow: " +sum2+ "\nAll return borrow: " +sum3);
     }
-
 }
