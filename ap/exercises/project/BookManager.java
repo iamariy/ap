@@ -10,14 +10,20 @@ public class BookManager {
     private DataManager dataManager;
     private List<BorrowRequest> borrowRequests;
     private List<AcceptBorrow> acceptBorrows;
-    private Book book;
+    private List<BorrowRequest> allRequests;
+    private List<AcceptBorrow> allAccepts;
+    private List<ReturnBook> returnBooks;
+    private List<AcceptReturn> acceptReturns;
 
     public BookManager(){
         this.books=new ArrayList<>();
         this.dataManager=new DataManager();
         this.borrowRequests=new ArrayList<>();
         this.acceptBorrows=new ArrayList<>();
-        this.books=books;
+        this.allRequests=new ArrayList<>();
+        this.allAccepts=new ArrayList<>();
+        this.returnBooks=new ArrayList<>();
+        this.acceptReturns=new ArrayList<>();
     }
 
 //    public BookManager(BorrowRequest borrowRequest){
@@ -46,6 +52,22 @@ public class BookManager {
 
     public void loadAccept(){
         dataManager.loadAccept(acceptBorrows);
+    }
+
+    public void loadAllR(){
+        dataManager.loadRequestAll(allRequests);
+    }
+
+    public void loadAllA(){
+        dataManager.loadAcceptAll(allAccepts);
+    }
+
+    public void loadReturn(){
+        dataManager.loadReturn(returnBooks);
+    }
+
+    public void loadAcceptReturn(){
+        dataManager.loadReturnAccept(acceptReturns);
     }
 
     public void searching(String name){
@@ -200,7 +222,9 @@ public class BookManager {
 
         BorrowRequest borrow=new BorrowRequest(student,book,start,end);
         borrowRequests.add(borrow);
+        allRequests.add(borrow);
         dataManager.saveRequest(borrowRequests);
+        dataManager.saveRequestAll(allRequests);
     }
 
     public void accept(Librarian librarian,LocalDate startDate){
@@ -224,6 +248,7 @@ public class BookManager {
                     AcceptBorrow accept=new AcceptBorrow(borrow,librarian,startDate,endDate);
                     borrowRequests.remove(borrowRequests.get(i));
                     acceptBorrows.add(accept);
+                    allAccepts.add(accept);
                     for (Book book : books){
                         if (book.getName().equals(borrow.getBook().getName())){
                             book.setCount(book.getCount()-1);
@@ -241,5 +266,54 @@ public class BookManager {
         }
         dataManager.saveRequest(borrowRequests);
         dataManager.saveAccept(acceptBorrows);
+        dataManager.saveAcceptAll(allAccepts);
     }
+
+    public void returnBook(Student student,LocalDate returnDate) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter book name");
+        String str = scanner.nextLine();
+
+        boolean found = false;
+
+        for (AcceptBorrow accept : acceptBorrows) {
+            if (accept.getBorrowRequest().getBook().getName().equals(str)) {
+                ReturnBook returnBook = new ReturnBook(student, accept, returnDate);
+                returnBooks.add(returnBook);
+                dataManager.saveReturn(returnBooks);
+                found = true;
+
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("The book is not found");
+        }
+    }
+
+    public void acceptReturn(Librarian librarian,LocalDate date){
+        if (returnBooks.isEmpty()) {
+            System.out.println("No borrow requests to review.");
+            return;
+        }
+
+        for (int i=0;i<returnBooks.size();i++){
+            ReturnBook returns=returnBooks.get(i);
+
+            AcceptReturn accept=new AcceptReturn(returns,librarian,date);
+            returnBooks.remove(returnBooks.get(i));
+            acceptReturns.add(accept);
+
+            for (Book book : books){
+                if (book.getName().equals(returns.getAcceptBorrow().getBorrowRequest().getBook().getName())){
+                    book.setCount(book.getCount()+1);
+                    saving();
+                }
+            }
+        }
+        dataManager.saveReturn(returnBooks);
+        dataManager.saveReturnAccept(acceptReturns);
+    }
+
 }

@@ -20,6 +20,10 @@ public class BorrowRequest {
         this.book=book;
     }
 
+    public BorrowRequest(Book book){
+        this.book=book;
+    }
+
     public Student getStudent(){
         return student;
     }

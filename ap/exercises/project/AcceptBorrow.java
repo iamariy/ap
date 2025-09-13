@@ -15,6 +15,10 @@ public class AcceptBorrow {
         this.endDate=endDate;
     }
 
+    public AcceptBorrow(BorrowRequest borrowRequest){
+        this.borrowRequest=borrowRequest;
+    }
+
     public BorrowRequest getBorrowRequest(){
         return borrowRequest;
     }

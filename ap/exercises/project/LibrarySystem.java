@@ -65,7 +65,7 @@ public class LibrarySystem {
     }
 
     public void returnBook(Student student) {
-        System.out.println("Not implemented.");
+        bookManager.returnBook(student,LocalDate.now());
     }
 
     public void displayAvailableBooks() {
@@ -176,12 +176,32 @@ public class LibrarySystem {
         bookManager.accept(librarian,LocalDate.now());
     }
 
+    public void returned(Librarian librarian){
+        bookManager.acceptReturn(librarian,LocalDate.now());
+    }
+
     public void load(){
         bookManager.loadRequest();
     }
 
     public void loadAccept(){
         bookManager.loadAccept();
+    }
+
+    public void loadAllR(){
+        bookManager.loadAllR();
+    }
+
+    public void loadAllA(){
+        bookManager.loadAllA();
+    }
+
+    public void loadReturn(){
+        bookManager.loadReturn();
+    }
+
+    public void loadAcceptReturn(){
+        bookManager.loadAcceptReturn();
     }
 
     public static void main(String[] args) {

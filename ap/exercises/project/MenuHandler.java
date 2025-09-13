@@ -129,6 +129,8 @@ public class MenuHandler {
         librarySystem.loadBooks();
         librarySystem.load();
         librarySystem.loadAccept();
+        librarySystem.loadAllR();
+        librarySystem.loadReturn();
 
         while (currentUser != null) {
             System.out.println("\n=== Student Dashboard ===");
@@ -233,6 +235,9 @@ public class MenuHandler {
         librarySystem.loadAccept();
         librarySystem.loadLibrarians();
         librarySystem.loadStudents();
+        librarySystem.loadAllA();
+        librarySystem.loadReturn();
+        librarySystem.loadAcceptReturn();
 
         System.out.println("=== Librarian Menu ===");
 
@@ -292,6 +297,9 @@ public class MenuHandler {
                     break;
                 case 7:
                     librarySystem.activing();
+                    break;
+                case 8:
+                    librarySystem.returned(currentUsre2);
                     break;
                     case 9:
                     System.out.println("Exiting...");
