@@ -1,336 +1,310 @@
 package ap.exercises.project;
 
-import java.io.*;
+import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class DataManager {
 
-    String filepath1="student.txt";
-    String filepath2="librarian.txt";
-    String filepath3="book.txt";
-    String filepath4="Requests.txt";
-    String filepath5="Accepts.txt";
-    String filepath6="All Requests.txt";
-    String filepath7="All Accepts.txt";
-    String filepath8="Return Request.txt";
-    String filepath9="Accept return.txt";
+    private static final String STUDENTS_FILE = "student.txt";
+    private static final String LIBRARIANS_FILE = "librarian.txt";
+    private static final String BOOKS_FILE = "book.txt";
+    private static final String REQUESTS_FILE = "Requests.txt";
+    private static final String ACCEPTS_FILE = "Accepts.txt";
+    private static final String ALL_REQUESTS_FILE = "All Requests.txt";
+    private static final String ALL_ACCEPTS_FILE = "All Accepts.txt";
+    private static final String RETURNS_FILE = "Return Request.txt";
+    private static final String ACCEPT_RETURNS_FILE = "Accept return.txt";
 
-    public void saveStudents(List<Student> students){
-        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath1))){
-            for (Student student : students){
-                writer.println(student.getName() +","+ student.getStudentId() +","+ student.getUsername() +","+ student.getPassword() +","+ student.isActive());
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    // ---- students ----
+
+    public void saveStudents(List<Student> students) {
+        List<String> lines = new ArrayList<>();
+        for (Student student : students) {
+            lines.add(student.getName() + "," + student.getStudentId() + "," + student.getUsername()
+                    + "," + student.getPassword() + "," + student.isActive());
+        }
+        writeLines(STUDENTS_FILE, lines);
+    }
+
+    public void loadStudents(List<Student> students) {
+        students.clear();
+        for (String line : readLines(STUDENTS_FILE)) {
+            try {
+                String[] p = line.split(",");
+                students.add(new Student(p[0].trim(), p[1].trim(), p[2].trim(), p[3].trim(),
+                        Boolean.parseBoolean(p[4].trim())));
+            } catch (RuntimeException e) {
+                skipLine(STUDENTS_FILE);
             }
-        } catch (IOException e){
-            System.out.println("Error to save students"+ e.getMessage());
         }
     }
 
-    public void loadStudents(List<Student> students){
-        File file=new File(filepath1);
+    // ---- librarians ----
 
-        if (!file.exists()){
-            System.out.println("Not found data");
-            return;
+    public void saveLibrarian(List<Librarian> librarians) {
+        List<String> lines = new ArrayList<>();
+        for (Librarian librarian : librarians) {
+            lines.add(librarian.getUsername() + "," + librarian.getPassword());
         }
+        writeLines(LIBRARIANS_FILE, lines);
+    }
 
-        try (Scanner scanner=new Scanner(file)){
-            while (scanner.hasNextLine()){
-                String line=scanner.nextLine().trim();
-                String[] parts=line.split(",");
-                if (parts.length==5){
-                    students.add(new Student(parts[0].trim(),parts[1].trim(),parts[2].trim(),parts[3].trim(),Boolean.parseBoolean(parts[4].trim())));
+    public void loadLibrarian(List<Librarian> librarians) {
+        librarians.clear();
+        for (String line : readLines(LIBRARIANS_FILE)) {
+            try {
+                String[] p = line.split(",");
+                librarians.add(new Librarian(p[0].trim(), p[1].trim()));
+            } catch (RuntimeException e) {
+                skipLine(LIBRARIANS_FILE);
+            }
+        }
+    }
+
+    // ---- books ----
+
+    public void saveBooks(List<Book> books) {
+        List<String> lines = new ArrayList<>();
+        for (Book book : books) {
+            lines.add(book.getName() + "," + book.getAuthor() + "," + book.getYear() + ","
+                    + book.getPagecounter() + "," + book.getCount() + ","
+                    + book.getLibrarian().getUsername());
+        }
+        writeLines(BOOKS_FILE, lines);
+    }
+
+    public void loadBooks(List<Book> books) {
+        books.clear();
+        for (String line : readLines(BOOKS_FILE)) {
+            try {
+                String[] p = line.split(",");
+                books.add(new Book(p[0].trim(), p[1].trim(), Integer.parseInt(p[2].trim()),
+                        Integer.parseInt(p[3].trim()), Integer.parseInt(p[4].trim()),
+                        new Librarian(p[5].trim())));
+            } catch (RuntimeException e) {
+                skipLine(BOOKS_FILE);
+            }
+        }
+    }
+
+    // ---- borrow requests ----
+
+    public void saveRequest(List<BorrowRequest> requests) {
+        saveRequests(requests, REQUESTS_FILE);
+    }
+
+    public void saveRequestAll(List<BorrowRequest> requests) {
+        saveRequests(requests, ALL_REQUESTS_FILE);
+    }
+
+    private void saveRequests(List<BorrowRequest> requests, String filepath) {
+        List<String> lines = new ArrayList<>();
+        for (BorrowRequest request : requests) {
+            lines.add(toLine(request));
+        }
+        writeLines(filepath, lines);
+    }
+
+    public void loadRequest(List<BorrowRequest> requests) {
+        loadRequests(requests, REQUESTS_FILE);
+    }
+
+    public void loadRequestAll(List<BorrowRequest> requests) {
+        loadRequests(requests, ALL_REQUESTS_FILE);
+    }
+
+    private void loadRequests(List<BorrowRequest> requests, String filepath) {
+        requests.clear();
+        for (String line : readLines(filepath)) {
+            try {
+                requests.add(parseRequest(line));
+            } catch (RuntimeException e) {
+                skipLine(filepath);
+            }
+        }
+    }
+
+    private String toLine(BorrowRequest request) {
+        return request.getStudent().getName() + "," + request.getStudent().getStudentId() + ","
+                + request.getBook().getName() + "," + request.getBook().getAuthor() + ","
+                + request.getStart() + "," + request.getEnd();
+    }
+
+    private BorrowRequest parseRequest(String line) {
+        String[] p = line.split(",");
+        Student student = new Student(p[0].trim(), p[1].trim());
+        Book book = new Book(p[2].trim(), p[3].trim());
+        return new BorrowRequest(student, book,
+                LocalDate.parse(p[4].trim(), DATE_FORMAT),
+                LocalDate.parse(p[5].trim(), DATE_FORMAT));
+    }
+
+    // ---- accepted borrows ----
+
+    public void saveAccept(List<AcceptBorrow> accepts) {
+        saveAccepts(accepts, ACCEPTS_FILE);
+    }
+
+    public void saveAcceptAll(List<AcceptBorrow> accepts) {
+        saveAccepts(accepts, ALL_ACCEPTS_FILE);
+    }
+
+    private void saveAccepts(List<AcceptBorrow> accepts, String filepath) {
+        List<String> lines = new ArrayList<>();
+        for (AcceptBorrow accept : accepts) {
+            lines.add(toLine(accept));
+        }
+        writeLines(filepath, lines);
+    }
+
+    public void loadAccept(List<AcceptBorrow> accepts) {
+        loadAccepts(accepts, ACCEPTS_FILE);
+    }
+
+    public void loadAcceptAll(List<AcceptBorrow> accepts) {
+        loadAccepts(accepts, ALL_ACCEPTS_FILE);
+    }
+
+    private void loadAccepts(List<AcceptBorrow> accepts, String filepath) {
+        accepts.clear();
+        for (String line : readLines(filepath)) {
+            try {
+                accepts.add(parseAccept(line));
+            } catch (RuntimeException e) {
+                skipLine(filepath);
+            }
+        }
+    }
+
+    private String toLine(AcceptBorrow accept) {
+        BorrowRequest request = accept.getBorrowRequest();
+        return request.getStudent().getName() + "," + request.getStudent().getStudentId() + ","
+                + request.getBook().getName() + "," + request.getBook().getAuthor() + ","
+                + accept.getLibrarian().getUsername() + ","
+                + accept.getStartDate() + "," + accept.getEndDate();
+    }
+
+    private AcceptBorrow parseAccept(String line) {
+        String[] p = line.split(",");
+        BorrowRequest request = new BorrowRequest(new Student(p[0].trim(), p[1].trim()),
+                new Book(p[2].trim(), p[3].trim()));
+        Librarian librarian = new Librarian(p[4].trim());
+        return new AcceptBorrow(request, librarian,
+                LocalDate.parse(p[5].trim(), DATE_FORMAT),
+                LocalDate.parse(p[6].trim(), DATE_FORMAT));
+    }
+
+    // ---- return requests ----
+
+    public void saveReturn(List<ReturnBook> returnBooks) {
+        List<String> lines = new ArrayList<>();
+        for (ReturnBook returnBook : returnBooks) {
+            lines.add(returnBook.getStudent().getName() + "," + returnBook.getStudent().getStudentId() + ","
+                    + returnBook.getAcceptBorrow().getBorrowRequest().getBook().getName() + ","
+                    + returnBook.getAcceptBorrow().getBorrowRequest().getBook().getAuthor() + ","
+                    + returnBook.getReturnDate());
+        }
+        writeLines(RETURNS_FILE, lines);
+    }
+
+    public void loadReturn(List<ReturnBook> returnBooks) {
+        returnBooks.clear();
+        for (String line : readLines(RETURNS_FILE)) {
+            try {
+                returnBooks.add(parseReturn(line));
+            } catch (RuntimeException e) {
+                skipLine(RETURNS_FILE);
+            }
+        }
+    }
+
+    private ReturnBook parseReturn(String line) {
+        String[] p = line.split(",");
+        Student student = new Student(p[0].trim(), p[1].trim());
+        Book book = new Book(p[2].trim(), p[3].trim());
+        return new ReturnBook(student, new AcceptBorrow(new BorrowRequest(book)),
+                LocalDate.parse(p[4].trim(), DATE_FORMAT));
+    }
+
+    // ---- accepted returns ----
+
+    public void saveReturnAccept(List<AcceptReturn> acceptReturns) {
+        List<String> lines = new ArrayList<>();
+        for (AcceptReturn acceptReturn : acceptReturns) {
+            lines.add(toLine(acceptReturn));
+        }
+        writeLines(ACCEPT_RETURNS_FILE, lines);
+    }
+
+    public void loadReturnAccept(List<AcceptReturn> acceptReturns) {
+        acceptReturns.clear();
+        for (String line : readLines(ACCEPT_RETURNS_FILE)) {
+            try {
+                acceptReturns.add(parseReturnAccept(line));
+            } catch (RuntimeException e) {
+                skipLine(ACCEPT_RETURNS_FILE);
+            }
+        }
+    }
+
+    private String toLine(AcceptReturn acceptReturn) {
+        ReturnBook returnBook = acceptReturn.getReturnBook();
+        return returnBook.getStudent().getName() + "," + returnBook.getStudent().getStudentId() + ","
+                + returnBook.getAcceptBorrow().getBorrowRequest().getBook().getName() + ","
+                + returnBook.getAcceptBorrow().getBorrowRequest().getBook().getAuthor() + ","
+                + acceptReturn.getLibrarian().getUsername() + "," + acceptReturn.getReturned();
+    }
+
+    private AcceptReturn parseReturnAccept(String line) {
+        String[] p = line.split(",");
+        Student student = new Student(p[0].trim(), p[1].trim());
+        Book book = new Book(p[2].trim(), p[3].trim());
+        ReturnBook returnBook = new ReturnBook(student, new AcceptBorrow(new BorrowRequest(book)));
+        Librarian librarian = new Librarian(p[4].trim());
+        return new AcceptReturn(returnBook, librarian, LocalDate.parse(p[5].trim(), DATE_FORMAT));
+    }
+
+    // ---- low-level helpers ----
+
+    private List<String> readLines(String filepath) {
+        File file = new File(filepath);
+        List<String> lines = new ArrayList<>();
+        if (!file.exists()) {
+            return lines; // first run: no data saved yet
+        }
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (!line.isEmpty()) {
+                    lines.add(line);
                 }
             }
-        } catch (IOException e){
-            System.out.println("Error to loadRequest students"+ e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error reading " + filepath + ": " + e.getMessage());
+        }
+        return lines;
+    }
+
+    private void writeLines(String filepath, List<String> lines) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filepath))) {
+            for (String line : lines) {
+                writer.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing " + filepath + ": " + e.getMessage());
         }
     }
 
-    public void saveLibrarian(List<Librarian> librarians){
-        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath2))){
-            for (Librarian librarian : librarians){
-                writer.println(librarian.getUsername() +","+ librarian.getPassword());
-            }
-        } catch (IOException e){
-            System.out.println("Error to save librarians"+ e.getMessage());
-        }
-    }
-
-    public void loadLibrarian(List<Librarian> librarians){
-        File file=new File(filepath2);
-
-        if (!file.exists()){
-            System.out.println("Not found data");
-            return;
-        }
-
-        try (Scanner scanner=new Scanner(file)){
-            while (scanner.hasNextLine()){
-                String line=scanner.nextLine().trim();
-                String[] parts=line.split(",");
-                if (parts.length==2){
-                    librarians.add(new Librarian(parts[0].trim(),parts[1].trim()));
-                }
-            }
-        } catch (IOException e){
-            System.out.println("Error to loadRequest librarians"+ e.getMessage());
-        }
-    }
-
-    public void saveBooks(List<Book> books){
-        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath3))){
-            for (Book book : books){
-                writer.println(book.getName() +","+ book.getAuthor() +","+ book.getYear() +","+ book.getPagecounter() +","+ book.getCount() +","+ book.getLibrarian().getUsername());
-            }
-        } catch (IOException e){
-            System.out.println("Error to save books"+ e.getMessage());
-        }
-    }
-
-    public void loadBooks(List<Book> books){
-        File file=new File(filepath3);
-
-        if (!file.exists()){
-            System.out.println("Not found data");
-            return;
-        }
-
-        try (Scanner scanner=new Scanner(file)){
-            while (scanner.hasNextLine()){
-                String line=scanner.nextLine().trim();
-                String[] parts=line.split(",");
-                if (parts.length==6){
-                    Librarian librarian=new Librarian(parts[5].trim());
-                    books.add(new Book(parts[0].trim(),parts[1].trim(),Integer.parseInt(parts[2].trim()),Integer.parseInt(parts[3].trim()),Integer.parseInt(parts[4].trim()),librarian));
-                }
-            }
-        } catch (IOException e){
-            System.out.println("Error to loadRequest students"+ e.getMessage());
-        }
-    }
-
-    public void saveRequest(List<BorrowRequest> borrowRequests){
-        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath4))){
-            for (BorrowRequest borrowRequest : borrowRequests){
-                writer.println(borrowRequest.getStudent().getName() +","+ borrowRequest.getStudent().getStudentId() +","+ borrowRequest.getBook().getName() +","+ borrowRequest.getBook().getAuthor() +","+ borrowRequest.getStart() +","+ borrowRequest.getEnd());
-            }
-        } catch (IOException e){
-            System.out.println("Error to save librarians"+ e.getMessage());
-        }
-    }
-
-    public void loadRequest(List<BorrowRequest> borrowRequests){
-        File file=new File(filepath4);
-
-        if (!file.exists()){
-            System.out.println("Not found data");
-            return;
-        }
-
-        DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        try (Scanner scanner=new Scanner(file)){
-            while (scanner.hasNextLine()){
-                String line=scanner.nextLine().trim();
-                String[] parts=line.split(",");
-                if (parts.length==6){
-                    Student student=new Student(parts[0].trim(),parts[1].trim());
-                    Book book=new Book(parts[2].trim(),parts[3].trim());
-                    borrowRequests.add(new BorrowRequest(student,book, LocalDate.parse(parts[4].trim(),dateTimeFormatter),LocalDate.parse(parts[5].trim(),dateTimeFormatter)));
-                }
-            }
-        } catch (IOException e){
-            System.out.println("Error to loadRequest students"+ e.getMessage());
-        }
-    }
-
-    public void saveAccept(List<AcceptBorrow> acceptBorrows){
-        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath5))){
-            for (AcceptBorrow acceptBorrow : acceptBorrows){
-                writer.println(acceptBorrow.getBorrowRequest().getStudent().getName() +","+ acceptBorrow.getBorrowRequest().getStudent().getStudentId() +","+ acceptBorrow.getBorrowRequest().getBook().getName() +","+ acceptBorrow.getBorrowRequest().getBook().getAuthor() +","+ acceptBorrow.getLibrarian().getUsername() +","+ acceptBorrow.getStartDate() +","+ acceptBorrow.getEndDate());
-            }
-        } catch (IOException e){
-            System.out.println("Error to save librarians"+ e.getMessage());
-        }
-    }
-
-    public void loadAccept(List<AcceptBorrow> acceptBorrows){
-        File file=new File(filepath5);
-
-        if (!file.exists()){
-            System.out.println("Not found data");
-            return;
-        }
-
-        DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-
-        try (Scanner scanner=new Scanner(file)){
-            while (scanner.hasNextLine()){
-                String line=scanner.nextLine().trim();
-                String[] parts=line.split(",");
-                if (parts.length>=7){
-                    Student student=new Student(parts[0].trim(),parts[1].trim());
-                    Book book=new Book(parts[2].trim(),parts[3].trim());
-                    BorrowRequest borrowRequest=new BorrowRequest(student,book);
-                    Librarian librarian=new Librarian(parts[4].trim());
-                    acceptBorrows.add(new AcceptBorrow(borrowRequest,librarian,LocalDate.parse(parts[5].trim(),dateTimeFormatter),LocalDate.parse(parts[6].trim(),dateTimeFormatter)));
-                }
-            }
-        } catch (IOException e){
-            System.out.println("Error to loadRequest students"+ e.getMessage());
-        }
-    }
-
-    public void saveRequestAll(List<BorrowRequest> allRequests){
-        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath6))){
-            for (BorrowRequest borrowRequest : allRequests){
-                writer.println(borrowRequest.getStudent().getName() +","+ borrowRequest.getStudent().getStudentId() +","+ borrowRequest.getBook().getName() +","+ borrowRequest.getBook().getAuthor() +","+ borrowRequest.getStart() +","+ borrowRequest.getEnd());
-            }
-        } catch (IOException e){
-            System.out.println("Error to save librarians"+ e.getMessage());
-        }
-    }
-
-    public void saveAcceptAll(List<AcceptBorrow> allAccept){
-        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath7))){
-            for (AcceptBorrow acceptBorrow : allAccept){
-                writer.println(acceptBorrow.getBorrowRequest().getStudent().getName() +","+ acceptBorrow.getBorrowRequest().getStudent().getStudentId() +","+ acceptBorrow.getBorrowRequest().getBook().getName() +","+ acceptBorrow.getBorrowRequest().getBook().getAuthor() +","+ acceptBorrow.getLibrarian().getUsername() +","+ acceptBorrow.getStartDate() +","+ acceptBorrow.getEndDate());
-            }
-        } catch (IOException e){
-            System.out.println("Error to save librarians"+ e.getMessage());
-        }
-    }
-
-    public void loadRequestAll(List<BorrowRequest> allRequests){
-        File file=new File(filepath6);
-
-        if (!file.exists()){
-            System.out.println("Not found data");
-            return;
-        }
-
-        DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        try (Scanner scanner=new Scanner(file)){
-            while (scanner.hasNextLine()){
-                String line=scanner.nextLine().trim();
-                String[] parts=line.split(",");
-                if (parts.length==6){
-                    Student student=new Student(parts[0].trim(),parts[1].trim());
-                    Book book=new Book(parts[2].trim(),parts[3].trim());
-                    allRequests.add(new BorrowRequest(student,book, LocalDate.parse(parts[4].trim(),dateTimeFormatter),LocalDate.parse(parts[5].trim(),dateTimeFormatter)));
-                }
-            }
-        } catch (IOException e){
-            System.out.println("Error to loadRequest students"+ e.getMessage());
-        }
-    }
-
-    public void loadAcceptAll(List<AcceptBorrow> allAccepts){
-        File file=new File(filepath7);
-
-        if (!file.exists()){
-            System.out.println("Not found data");
-            return;
-        }
-
-        DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-
-        try (Scanner scanner=new Scanner(file)){
-            while (scanner.hasNextLine()){
-                String line=scanner.nextLine().trim();
-                String[] parts=line.split(",");
-                if (parts.length>=7){
-                    Student student=new Student(parts[0].trim(),parts[1].trim());
-                    Book book=new Book(parts[2].trim(),parts[3].trim());
-                    BorrowRequest borrowRequest=new BorrowRequest(student,book);
-                    Librarian librarian=new Librarian(parts[4].trim());
-                    allAccepts.add(new AcceptBorrow(borrowRequest,librarian,LocalDate.parse(parts[5].trim(),dateTimeFormatter),LocalDate.parse(parts[6].trim(),dateTimeFormatter)));
-                }
-            }
-        } catch (IOException e){
-            System.out.println("Error to loadRequest students"+ e.getMessage());
-        }
-    }
-
-    public void saveReturn(List<ReturnBook> returnBooks){
-        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath8))){
-            for (ReturnBook returnBook : returnBooks){
-                writer.println(returnBook.getStudent().getName() +","+ returnBook.getStudent().getStudentId() +","+ returnBook.getAcceptBorrow().getBorrowRequest().getBook().getName() +","+ returnBook.getAcceptBorrow().getBorrowRequest().getBook().getAuthor() +","+ returnBook.getReturnDate());
-            }
-        } catch (IOException e){
-            System.out.println("Error to save librarians"+ e.getMessage());
-        }
-    }
-
-    public void loadReturn(List<ReturnBook> returnBooks){
-        File file=new File(filepath8);
-
-        if (!file.exists()){
-            System.out.println("Not found data");
-            return;
-        }
-
-        DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        try (Scanner scanner=new Scanner(file)){
-            while (scanner.hasNextLine()){
-                String line=scanner.nextLine().trim();
-                String[] parts=line.split(",");
-                if (parts.length==5){
-                    Student student=new Student(parts[0].trim(),parts[1].trim());
-                    Book book=new Book(parts[2].trim(),parts[3].trim());
-                    AcceptBorrow acceptBorrow=new AcceptBorrow(new BorrowRequest(book));
-                    returnBooks.add(new ReturnBook(student,acceptBorrow, LocalDate.parse(parts[4].trim(),dateTimeFormatter)));
-                }
-            }
-        } catch (IOException e){
-            System.out.println("Error to loadRequest students"+ e.getMessage());
-        }
-    }
-
-    public void saveReturnAccept(List<AcceptReturn> acceptReturns){
-        try(PrintWriter writer=new PrintWriter(new FileWriter(filepath9))){
-            for (AcceptReturn acceptReturn : acceptReturns){
-                writer.println(acceptReturn.getReturnBook().getStudent().getName() +","+ acceptReturn.getReturnBook().getStudent().getStudentId() +","+ acceptReturn.getReturnBook().getAcceptBorrow().getBorrowRequest().getBook().getName() +","+ acceptReturn.getReturnBook().getAcceptBorrow().getBorrowRequest().getBook().getAuthor() +","+ acceptReturn.getLibrarian().getUsername() +","+ acceptReturn.getReturned());
-            }
-        } catch (IOException e){
-            System.out.println("Error to save librarians"+ e.getMessage());
-        }
-    }
-
-    public void loadReturnAccept(List<AcceptReturn> acceptReturns){
-        File file=new File(filepath9);
-
-        if (!file.exists()){
-            System.out.println("Not found data");
-            return;
-        }
-
-        DateTimeFormatter dateTimeFormatter=DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-
-        try (Scanner scanner=new Scanner(file)){
-            while (scanner.hasNextLine()){
-                String line=scanner.nextLine().trim();
-                String[] parts=line.split(",");
-                if (parts.length==6){
-                    Student student=new Student(parts[0].trim(),parts[1].trim());
-                    Book book=new Book(parts[2].trim(),parts[3].trim());
-                    ReturnBook returnBook=new ReturnBook(student,new AcceptBorrow(new BorrowRequest(book)));
-                    Librarian librarian=new Librarian(parts[4].trim());
-                    acceptReturns.add(new AcceptReturn(returnBook,librarian,LocalDate.parse(parts[5].trim(),dateTimeFormatter)));
-                }
-            }
-        } catch (IOException e){
-            System.out.println("Error to loadRequest students"+ e.getMessage());
-        }
+    private void skipLine(String filepath) {
+        System.out.println("Skipping corrupted line in " + filepath);
     }
 }

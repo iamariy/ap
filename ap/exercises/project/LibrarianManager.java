@@ -18,9 +18,9 @@ public class LibrarianManager {
             return;
         }
 
-        Librarian newLibraian=new Librarian(username,password);
-        librarians.add(newLibraian);
-        System.out.println("Student registration completed successfully.");
+        Librarian newLibrarian = new Librarian(username, password);
+        librarians.add(newLibrarian);
+        System.out.println("Librarian added successfully.");
     }
 
     public Librarian authenticateLibrarian(String username, String password) {

@@ -12,7 +12,7 @@ public class Manager extends Person{
 
     @Override
     public String toString(){
-        return "username: " +getUsername()+
-                " |password: " +getPassword();
+        return "username: " + getUsername()
+                + " | password: " + getPassword();
     }
 }

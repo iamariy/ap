@@ -3,10 +3,10 @@ package ap.exercises.project;
 import java.time.LocalDate;
 
 public class AcceptBorrow {
-    BorrowRequest borrowRequest;
-    Librarian librarian;
-    LocalDate startDate;
-    LocalDate endDate;
+    private BorrowRequest borrowRequest;
+    private Librarian librarian;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public AcceptBorrow(BorrowRequest borrowRequest,Librarian librarian,LocalDate startDate,LocalDate endDate){
         this.borrowRequest=borrowRequest;

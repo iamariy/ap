@@ -3,417 +3,429 @@ package ap.exercises.project;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Consumer;
 
-public class BookManager implements Connection,HandleData,Getter{
+public class BookManager implements Connection, HandleData, Getter {
     private List<Book> books;
     private DataManager dataManager;
-    private List<BorrowRequest> borrowRequests;
-    private List<AcceptBorrow> acceptBorrows;
-    private List<BorrowRequest> allRequests;
-    private List<AcceptBorrow> allAccepts;
-    private List<ReturnBook> returnBooks;
-    private List<AcceptReturn> acceptReturns;
+    private List<BorrowRequest> borrowRequests;   // pending borrow requests
+    private List<AcceptBorrow> acceptBorrows;     // currently active loans
+    private List<BorrowRequest> allRequests;      // every request ever made (history)
+    private List<AcceptBorrow> allAccepts;        // every loan ever accepted (history)
+    private List<ReturnBook> returnBooks;         // pending return requests
+    private List<AcceptReturn> acceptReturns;     // every accepted return (history)
     private Scanner scanner;
 
-    public BookManager(){
-        this.books=new ArrayList<>();
-        this.dataManager=new DataManager();
-        this.borrowRequests=new ArrayList<>();
-        this.acceptBorrows=new ArrayList<>();
-        this.allRequests=new ArrayList<>();
-        this.allAccepts=new ArrayList<>();
-        this.returnBooks=new ArrayList<>();
-        this.acceptReturns=new ArrayList<>();
-        this.scanner=new Scanner(System.in);
+    public BookManager(Scanner scanner) {
+        this.books = new ArrayList<>();
+        this.dataManager = new DataManager();
+        this.borrowRequests = new ArrayList<>();
+        this.acceptBorrows = new ArrayList<>();
+        this.allRequests = new ArrayList<>();
+        this.allAccepts = new ArrayList<>();
+        this.returnBooks = new ArrayList<>();
+        this.acceptReturns = new ArrayList<>();
+        this.scanner = scanner;
     }
 
     @Override
-    public void addBook(String name,String author,int year,int pagecounter,int count,Librarian librarian){
-        Book newBook=new Book(name,author,year,pagecounter,count,librarian);
-
-
-            books.add(newBook);
-            System.out.println("book %d is added successfully!");
+    public void addBook(String name, String author, int year, int pagecounter, int count, Librarian librarian) {
+        books.add(new Book(name, author, year, pagecounter, count, librarian));
+        System.out.println("Book \"" + name + "\" added successfully!");
     }
+
     @Override
-    public void saveBooks(){
+    public void saveBooks() {
         dataManager.saveBooks(books);
     }
+
     @Override
-    public void loadBooks(){
+    public void loadBooks() {
         dataManager.loadBooks(books);
     }
+
     @Override
-    public void loadRequest(){
+    public void loadRequest() {
         dataManager.loadRequest(borrowRequests);
     }
+
     @Override
-    public void loadAccept(){
+    public void loadAccept() {
         dataManager.loadAccept(acceptBorrows);
     }
+
     @Override
-    public void loadAllR(){
+    public void loadAllR() {
         dataManager.loadRequestAll(allRequests);
     }
+
     @Override
-    public void loadAllA(){
+    public void loadAllA() {
         dataManager.loadAcceptAll(allAccepts);
     }
+
     @Override
-    public void loadReturn(){
+    public void loadReturn() {
         dataManager.loadReturn(returnBooks);
     }
+
     @Override
-    public void loadAcceptReturn(){
+    public void loadAcceptReturn() {
         dataManager.loadReturnAccept(acceptReturns);
     }
-    @Override
-    public void searchBook(String name){
-        boolean found=false;
 
+    @Override
+    public void searchBook(String name) {
         for (Book book : books) {
             if (name.equals(book.getName())) {
-                System.out.println("Name is:" + book.getName() + "   Author is:" + book.getAuthor() + "   Year is:" + book.getYear() + "   Page count is:" +book.getPagecounter());
-                found = true;
-                break;
+                System.out.println("Name: " + book.getName()
+                        + " | Author: " + book.getAuthor()
+                        + " | Year: " + book.getYear()
+                        + " | Page count: " + book.getPagecounter());
+                return;
             }
         }
-        if (!found){
-            System.out.println("Book is not found");
-        }
+        System.out.println("Book is not found");
     }
 
-    public void editName(String name){
-        boolean found=false;
-        int count=0;
-
-        for (Book book : books){
-            if (name.equals(book.getName())){
-                System.out.println("Enter new name");
-                String nm=scanner.nextLine();
-                book.setName(nm);
-                count++;
-                found=true;
-            }
-        }
-        if (found){
-            System.out.println("Book is updated successfully!");
-            saveBooks();
-        }
-        else {
-            System.out.println("Book is not found");
-        }
+    public void editName(String name, String newName) {
+        editMatchingBooks(name, "name", book -> book.setName(newName));
     }
 
-    public void editAuthor(String name){
-        boolean found=false;
-        int count=0;
-
-        for (Book book : books){
-            if (name.equals(book.getName())){
-                System.out.println("Enter new author");
-                String na=scanner.nextLine();
-                book.setAuthor(na);
-                count++;
-                found=true;
-            }
-        }
-        if (found){
-            System.out.println("Book is updated successfully!");
-            saveBooks();
-        }
-        else {
-            System.out.println("Book is not found");
-        }
+    public void editAuthor(String name, String newAuthor) {
+        editMatchingBooks(name, "author", book -> book.setAuthor(newAuthor));
     }
 
-    public void editYear(String name){
-        boolean found=false;
-        int count=0;
-
-        for (Book book : books){
-            if (name.equals(book.getName())){
-                System.out.println("Enter new year");
-                int ny=scanner.nextInt();
-                book.setYear(ny);
-                count++;
-                found=true;
-            }
-        }
-        if (found){
-            System.out.println("Book is updated successfully!");
-            saveBooks();
-        }
-        else {
-            System.out.println("Book is not found");
-        }
+    public void editYear(String name, int newYear) {
+        editMatchingBooks(name, "year", book -> book.setYear(newYear));
     }
 
-    public void editPage(String name){
-        boolean found=false;
-        int count=0;
+    public void editPage(String name, int newPageCount) {
+        editMatchingBooks(name, "page count", book -> book.setPagecounter(newPageCount));
+    }
 
-        for (Book book : books){
-            if (name.equals(book.getName())){
-                System.out.println("Enter new page count");
-                int nc=scanner.nextInt();
-                book.setPagecounter(nc);
-                count++;
-                found=true;
+    public void editCount(String name, int newCount) {
+        editMatchingBooks(name, "count", book -> book.setCount(newCount));
+    }
+
+    private void editMatchingBooks(String name, String field, Consumer<Book> change) {
+        int updated = 0;
+        for (Book book : books) {
+            if (name.equals(book.getName())) {
+                change.accept(book);
+                updated++;
             }
         }
-        if (found){
-            System.out.println("Book is updated successfully!");
+        if (updated > 0) {
+            System.out.println(updated + " book(s) updated (" + field + ")!");
             saveBooks();
-        }
-        else {
+        } else {
             System.out.println("Book is not found");
         }
     }
 
     public Book isAvailable(String searchTerm) {
         for (Book book : books) {
-            if (searchTerm.equals(book.getName()) ||
-                    searchTerm.equals(book.getAuthor()) ||
-                    searchTerm.equals(Integer.toString(book.getYear()))) {
+            if (searchTerm.equals(book.getName())
+                    || searchTerm.equals(book.getAuthor())
+                    || searchTerm.equals(Integer.toString(book.getYear()))) {
 
-                System.out.println("Book name is: " + book.getName() +
-                        " Author is: " + book.getAuthor() +
-                        " Year is: " + book.getYear() +
-                        " Page count is: " + book.getPagecounter());
+                System.out.println("Book name: " + book.getName()
+                        + " | Author: " + book.getAuthor()
+                        + " | Year: " + book.getYear()
+                        + " | Page count: " + book.getPagecounter());
 
                 if (book.getCount() > 0) {
                     System.out.println("Book is available!");
                     return book;
-                } else {
-                    System.out.println("Book is not available!");
-                    return null;
                 }
+                System.out.println("Book is not available!");
+                return null;
             }
         }
         System.out.println("Book is not registered!");
         return null;
     }
 
-    public void borrowBook(Student student, LocalDate start){
-        if (student.isActive()==false) {
-            System.out.println("You can't borrow book");
+    public void borrowBook(Student student, LocalDate start) {
+        if (!student.isActive()) {
+            System.out.println("You can't borrow a book because your account is deactivated.");
             return;
         }
 
-
-        System.out.println("Enter book name");
-        String name=scanner.nextLine();
-
-        Book book=isAvailable(name);
-
+        String name = InputHelper.readField(scanner, "Enter book name: ");
+        Book book = isAvailable(name);
         if (book == null) {
             return;
         }
 
-        LocalDate end=start.plusDays(1);
-
-        BorrowRequest borrow=new BorrowRequest(student,book,start,end);
+        BorrowRequest borrow = new BorrowRequest(student, book, start, start.plusDays(1));
         borrowRequests.add(borrow);
         allRequests.add(borrow);
-        System.out.println("Sent borrow request");
+        System.out.println("Borrow request sent.");
         dataManager.saveRequest(borrowRequests);
         dataManager.saveRequestAll(allRequests);
     }
 
-    public void accept(Librarian librarian, LocalDate startDate){
-        LocalDate endDate=startDate.plusDays(20);
-
+    public void accept(Librarian librarian, LocalDate startDate) {
         if (borrowRequests.isEmpty()) {
             System.out.println("No borrow requests to review.");
             return;
         }
 
-        for (int i=0;i<borrowRequests.size();i++){
-            BorrowRequest borrow=borrowRequests.get(i);
+        LocalDate endDate = startDate.plusDays(20);
 
-            if ((startDate.isEqual(borrow.getStart()) || startDate.isAfter(borrow.getStart()))
-            && (startDate.isEqual(borrow.getEnd()) || startDate.isBefore(borrow.getEnd()))){
-                System.out.println(borrow.getStudent().getName() +","+ borrow.getStudent().getStudentId() +","+ borrow.getBook().getName() +","+ borrow.getBook().getAuthor());
-                System.out.println("Do you want accept it?  (y/n)?");
-                String input=scanner.nextLine();
-                if (input.equals("y")){
-                    AcceptBorrow accept=new AcceptBorrow(borrow,librarian,startDate,endDate);
-                    borrowRequests.remove(borrowRequests.get(i));
-                    acceptBorrows.add(accept);
-                    allAccepts.add(accept);
-                    for (Book book : books){
-                        if (book.getName().equals(borrow.getBook().getName())){
-                            book.setCount(book.getCount()-1);
-                            saveBooks();
-                        }
+        Iterator<BorrowRequest> iterator = borrowRequests.iterator();
+        while (iterator.hasNext()) {
+            BorrowRequest borrow = iterator.next();
+            boolean started = !startDate.isBefore(borrow.getStart());
+            boolean notExpired = !startDate.isAfter(borrow.getEnd());
+            if (!started || !notExpired) {
+                continue;
+            }
+
+            System.out.println(borrow.getStudent().getName() + ", " + borrow.getStudent().getStudentId()
+                    + ", " + borrow.getBook().getName() + ", " + borrow.getBook().getAuthor());
+            System.out.println("Do you want to accept it? (y/n)");
+            String input = scanner.nextLine().trim();
+
+            if (input.equalsIgnoreCase("y")) {
+                iterator.remove();
+                AcceptBorrow accept = new AcceptBorrow(borrow, librarian, startDate, endDate);
+                acceptBorrows.add(accept);
+                allAccepts.add(accept);
+                for (Book book : books) {
+                    if (book.getName().equals(borrow.getBook().getName())
+                            && book.getAuthor().equals(borrow.getBook().getAuthor())) {
+                        book.setCount(book.getCount() - 1);
                     }
-                    System.out.println("Accept request");
-                } else if (input.equals("n")){
-                    borrowRequests.remove(i);
-                    System.out.println("Not accept request");
-                } else {
-                    System.out.println("Invalid choice!Please try again");
                 }
+                System.out.println("Request accepted.");
+            } else if (input.equalsIgnoreCase("n")) {
+                iterator.remove();
+                System.out.println("Request rejected.");
+            } else {
+                System.out.println("Invalid choice! Please answer y or n.");
             }
         }
+
+        saveBooks();
         dataManager.saveRequest(borrowRequests);
         dataManager.saveAccept(acceptBorrows);
         dataManager.saveAcceptAll(allAccepts);
     }
 
-    public void returnBook(Student student,LocalDate returnDate) {
-        System.out.println("Enter book name");
-        String str = scanner.nextLine();
+    public void returnBook(Student student, LocalDate returnDate) {
+        String name = InputHelper.readField(scanner, "Enter book name: ");
 
-        boolean found = false;
-
-        for (AcceptBorrow accept : acceptBorrows) {
-            if (accept.getBorrowRequest().getBook().getName().equals(str)) {
-                ReturnBook returnBook = new ReturnBook(student, accept, returnDate);
-                returnBooks.add(returnBook);
-                dataManager.saveReturn(returnBooks);
-                found = true;
-                System.out.println("Sent return request");
-
-                break;
+        for (ReturnBook pending : returnBooks) {
+            if (pending.getStudent().getStudentId().equals(student.getStudentId())
+                    && pending.getAcceptBorrow().getBorrowRequest().getBook().getName().equals(name)) {
+                System.out.println("You already have a pending return request for this book.");
+                return;
             }
         }
 
-        if (!found) {
-            System.out.println("The book is not found");
+        for (AcceptBorrow accept : acceptBorrows) {
+            BorrowRequest borrow = accept.getBorrowRequest();
+            if (borrow.getBook().getName().equals(name)
+                    && borrow.getStudent().getStudentId().equals(student.getStudentId())) {
+                returnBooks.add(new ReturnBook(student, accept, returnDate));
+                dataManager.saveReturn(returnBooks);
+                System.out.println("Return request sent.");
+                return;
+            }
         }
+
+        System.out.println("No active loan of this book was found for your account.");
     }
 
-    public void acceptReturn(Librarian librarian,LocalDate date){
+    public void acceptReturn(Librarian librarian, LocalDate date) {
         if (returnBooks.isEmpty()) {
-            System.out.println("No borrow requests to review.");
+            System.out.println("No return requests to review.");
             return;
         }
 
-        for (int i=0;i<returnBooks.size();i++){
-            ReturnBook returns=returnBooks.get(i);
+        Iterator<ReturnBook> iterator = returnBooks.iterator();
+        while (iterator.hasNext()) {
+            ReturnBook returnRequest = iterator.next();
+            BorrowRequest borrow = returnRequest.getAcceptBorrow().getBorrowRequest();
 
-            AcceptReturn accept=new AcceptReturn(returns,librarian,date);
-            returnBooks.remove(returnBooks.get(i));
-            acceptReturns.add(accept);
+            System.out.println(returnRequest.getStudent().getName() + ", " + returnRequest.getStudent().getStudentId()
+                    + ", " + borrow.getBook().getName() + ", " + borrow.getBook().getAuthor());
+            System.out.println("Do you want to accept this return? (y/n)");
+            String input = scanner.nextLine().trim();
 
-            for (int j=0;j<acceptBorrows.size();j++){
-                AcceptBorrow acceptBorrow=acceptBorrows.get(j);
-                if (acceptBorrow.getBorrowRequest().getBook().getName().equals(accept.getReturnBook().getAcceptBorrow().getBorrowRequest().getBook().getName())){
-                    acceptBorrows.remove(acceptBorrows.get(j));
+            if (input.equalsIgnoreCase("y")) {
+                iterator.remove();
+                acceptReturns.add(new AcceptReturn(returnRequest, librarian, date));
+                removeActiveLoan(returnRequest);
+                for (Book book : books) {
+                    if (book.getName().equals(borrow.getBook().getName())
+                            && book.getAuthor().equals(borrow.getBook().getAuthor())) {
+                        book.setCount(book.getCount() + 1);
+                    }
                 }
-            }
-
-            for (Book book : books){
-                if (book.getName().equals(returns.getAcceptBorrow().getBorrowRequest().getBook().getName())){
-                    book.setCount(book.getCount()+1);
-                    saveBooks();
-                }
+                System.out.println("Return accepted.");
+            } else if (input.equalsIgnoreCase("n")) {
+                iterator.remove();
+                System.out.println("Return rejected.");
+            } else {
+                System.out.println("Invalid choice! Please answer y or n.");
             }
         }
-        System.out.println("Backed book");
 
+        saveBooks();
         dataManager.saveReturn(returnBooks);
         dataManager.saveReturnAccept(acceptReturns);
         dataManager.saveAccept(acceptBorrows);
     }
+
+    private void removeActiveLoan(ReturnBook returnRequest) {
+        String studentId = returnRequest.getStudent().getStudentId();
+        BorrowRequest borrow = returnRequest.getAcceptBorrow().getBorrowRequest();
+
+        Iterator<AcceptBorrow> iterator = acceptBorrows.iterator();
+        while (iterator.hasNext()) {
+            BorrowRequest activeBorrow = iterator.next().getBorrowRequest();
+            boolean sameStudent = activeBorrow.getStudent().getStudentId().equals(studentId);
+            boolean sameBook = activeBorrow.getBook().getName().equals(borrow.getBook().getName())
+                    && activeBorrow.getBook().getAuthor().equals(borrow.getBook().getAuthor());
+            if (sameStudent && sameBook) {
+                iterator.remove();
+                return;
+            }
+        }
+    }
+
     @Override
-    public int getBookCount(){
-        int sum=0;
-        for (Book book : books){
-            sum+=book.getCount();
+    public int getBookCount() {
+        int sum = 0;
+        for (Book book : books) {
+            sum += book.getCount();
         }
         return sum;
     }
+
     @Override
-    public int getLoanCount(){
+    public int getLoanCount() {
         return allAccepts.size();
     }
+
     @Override
-    public int activeLoans(){
-        return this.acceptBorrows.size();
+    public int activeLoans() {
+        return acceptBorrows.size();
     }
+
     @Override
-    public void print(){
-        for (AcceptBorrow all : allAccepts){
-            System.out.println("Student name: " +all.getBorrowRequest().getStudent().getName()+ " Student Id: " +all.getBorrowRequest().getStudent().getStudentId()+ " Book name: " +all.getBorrowRequest().getBook().getName()+ " Author name: " +all.getBorrowRequest().getBook().getAuthor());
+    public void print() {
+        for (AcceptBorrow accept : allAccepts) {
+            BorrowRequest borrow = accept.getBorrowRequest();
+            System.out.println("Student name: " + borrow.getStudent().getName()
+                    + " | Student ID: " + borrow.getStudent().getStudentId()
+                    + " | Book: " + borrow.getBook().getName()
+                    + " | Author: " + borrow.getBook().getAuthor());
         }
     }
+
     @Override
-    public int delay(){
-        int count=0;
-        for (AcceptBorrow all : allAccepts){
-            for (AcceptReturn acceptReturn : acceptReturns){
-                if (ChronoUnit.DAYS.between(acceptReturn.getReturned(),all.getEndDate())<0){
-                    count++;
-                }
+    public int delay() {
+        int count = 0;
+        for (AcceptBorrow accept : allAccepts) {
+            AcceptReturn matchingReturn = findMatchingReturn(accept);
+            if (matchingReturn != null
+                    && ChronoUnit.DAYS.between(matchingReturn.getReturned(), accept.getEndDate()) < 0) {
+                count++;
             }
         }
         return count;
     }
-    @Override
-    public void librarianHistory(String username){
-        int sum1=0,sum2=0,sum3=0;
 
-        for (Book book : books){
-            if (book.getLibrarian().getUsername().equals(username)){
-                sum1+=book.getCount();
-            }
-        }
-        for (AcceptBorrow all : allAccepts){
-            if (all.getLibrarian().getUsername().equals(username)){
-                sum2++;
-            }
-        }
-        for (AcceptReturn acceptReturn : acceptReturns){
-            if (acceptReturn.getLibrarian().getUsername().equals(username)){
-                sum3++;
-            }
-        }
-        System.out.println("Count of book add: " +sum1+ "\nAll accept borrow: " +sum2+ "\nAll return borrow: " +sum3);
-    }
     @Override
-    public int requestCounter(){
-        return this.allRequests.size();
-    }
-    @Override
-    public long daysCounter(){
-        long count=0;
+    public void librarianHistory(String username) {
+        int addedBooks = 0;
+        int acceptedBorrows = 0;
+        int acceptedReturns = 0;
 
-        for (AcceptBorrow all : allAccepts){
-            for (AcceptReturn acceptReturn : acceptReturns){
-                long days=Math.abs(ChronoUnit.DAYS.between(acceptReturn.getReturned(),all.getStartDate()));
-                count+=days;
+        for (Book book : books) {
+            if (book.getLibrarian() != null && book.getLibrarian().getUsername().equals(username)) {
+                addedBooks += book.getCount();
             }
         }
-        return count;
-
+        for (AcceptBorrow accept : allAccepts) {
+            if (accept.getLibrarian().getUsername().equals(username)) {
+                acceptedBorrows++;
+            }
+        }
+        for (AcceptReturn acceptReturn : acceptReturns) {
+            if (acceptReturn.getLibrarian().getUsername().equals(username)) {
+                acceptedReturns++;
+            }
+        }
+        System.out.println("Count of added books: " + addedBooks
+                + "\nAll accepted borrows: " + acceptedBorrows
+                + "\nAll accepted returns: " + acceptedReturns);
     }
+
+    @Override
+    public int requestCounter() {
+        return allRequests.size();
+    }
+
+    @Override
+    public long daysCounter() {
+        long total = 0;
+        for (AcceptBorrow accept : allAccepts) {
+            AcceptReturn matchingReturn = findMatchingReturn(accept);
+            if (matchingReturn != null) {
+                total += Math.abs(ChronoUnit.DAYS.between(matchingReturn.getReturned(), accept.getStartDate()));
+            }
+        }
+        return total;
+    }
+
     @Override
     public void delayStudents() {
-        Map<Student, Long> studentDelayMap = new HashMap<>();
+        Map<String, Long> lateDaysById = new HashMap<>();
+        Map<String, String> nameById = new HashMap<>();
 
-        for (AcceptBorrow all : allAccepts) {
-            for (AcceptReturn acceptReturn : acceptReturns) {
-                    long daysLate = ChronoUnit.DAYS.between(all.getEndDate(), acceptReturn.getReturned());
-                    if (daysLate > 0) {
-                        studentDelayMap.merge(all.getBorrowRequest().getStudent(), daysLate, Long::sum);
-
-                }
+        for (AcceptBorrow accept : allAccepts) {
+            AcceptReturn matchingReturn = findMatchingReturn(accept);
+            if (matchingReturn == null) {
+                continue;
+            }
+            long daysLate = ChronoUnit.DAYS.between(accept.getEndDate(), matchingReturn.getReturned());
+            if (daysLate > 0) {
+                Student student = accept.getBorrowRequest().getStudent();
+                lateDaysById.merge(student.getStudentId(), daysLate, Long::sum);
+                nameById.putIfAbsent(student.getStudentId(), student.getName());
             }
         }
 
-        List<Map.Entry<Student, Long>> top10 = studentDelayMap.entrySet().stream()
-                .sorted(Map.Entry.<Student, Long>comparingByValue(Comparator.reverseOrder()))
+        List<Map.Entry<String, Long>> top10 = lateDaysById.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue(Comparator.reverseOrder()))
                 .limit(10)
                 .toList();
 
         System.out.println("Top 10 late students:");
-        for (Map.Entry<Student, Long> entry : top10) {
-            Student s = entry.getKey();
-            long totalLateDays = entry.getValue();
-            System.out.println(s.getName() + " (ID: " + s.getStudentId() + ") → Total late days: " + totalLateDays);
+        for (Map.Entry<String, Long> entry : top10) {
+            System.out.println(nameById.get(entry.getKey()) + " (ID: " + entry.getKey()
+                    + ") → Total late days: " + entry.getValue());
         }
+    }
+
+    private AcceptReturn findMatchingReturn(AcceptBorrow accept) {
+        BorrowRequest borrow = accept.getBorrowRequest();
+        for (AcceptReturn acceptReturn : acceptReturns) {
+            ReturnBook returnBook = acceptReturn.getReturnBook();
+            BorrowRequest returnedBorrow = returnBook.getAcceptBorrow().getBorrowRequest();
+            boolean sameStudent = returnBook.getStudent().getStudentId().equals(borrow.getStudent().getStudentId());
+            boolean sameBook = returnedBorrow.getBook().getName().equals(borrow.getBook().getName())
+                    && returnedBorrow.getBook().getAuthor().equals(borrow.getBook().getAuthor());
+            if (sameStudent && sameBook) {
+                return acceptReturn;
+            }
+        }
+        return null;
     }
 }

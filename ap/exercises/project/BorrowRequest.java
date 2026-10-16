@@ -42,6 +42,9 @@ public class BorrowRequest {
 
     @Override
     public String toString(){
-        return "Students" +student+ "Book Name" +book+ "Start Date" +start+ "End Date" +end;
+        return "Student: " + student
+                + " | Book: " + book
+                + " | Start date: " + start
+                + " | End date: " + end;
     }
 }

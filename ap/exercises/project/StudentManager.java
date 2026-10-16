@@ -7,15 +7,10 @@ import java.util.Scanner;
 public class StudentManager {
     private List<Student> students;
     private DataManager dataManager;
-    private BorrowRequest borrowRequest;
 
     public StudentManager() {
         this.students = new ArrayList<>();
-        this.dataManager=new DataManager();
-    }
-
-    public StudentManager(BorrowRequest borrowRequest){
-        this.borrowRequest=borrowRequest;
+        this.dataManager = new DataManager();
     }
 
     public void registerStudent(String name, String studentId, String username, String password) {
@@ -24,8 +19,7 @@ public class StudentManager {
             return;
         }
 
-        Student newStudent = new Student(name, studentId, username, password,true);
-        students.add(newStudent);
+        students.add(new Student(name, studentId, username, password, true));
         System.out.println("Student registration completed successfully.");
     }
 
@@ -49,7 +43,6 @@ public class StudentManager {
         }
     }
 
-
     private boolean isUsernameTaken(String username) {
         return students.stream().anyMatch(s -> s.getUsername().equals(username));
     }
@@ -58,56 +51,30 @@ public class StudentManager {
         return students.size();
     }
 
-    public void saving(){
+    public void saving() {
         dataManager.saveStudents(students);
     }
 
-    public void loading(){
+    public void loading() {
         dataManager.loadStudents(students);
     }
 
-    public void changeActiving(String studentId) {
-        Scanner scanner = new Scanner(System.in);
-        boolean found = false;
-
+    public void changeActiving(String studentId, Scanner scanner) {
         for (Student student : students) {
             if (student.getStudentId().equals(studentId)) {
-                found = true;
-                System.out.println(student.isActive());
-
-                if (student.isActive()) {
-                    System.out.println("Do you want to change to di active? (y or n)?");
-                    String input = scanner.nextLine();
-                    if (input.equals("y")) {
-                        student.setActive(false);
-                        saving();
-                        System.out.println("Student activity is changed to di active");
-                    } else if (input.equals("n")) {
-                        System.out.println("Student remains active");
-                    } else {
-                        System.out.println("Invalid choice! Please try again");
-                    }
+                System.out.println("Current status: " + (student.isActive() ? "active" : "inactive"));
+                System.out.println("Do you want to change it? (y/n)");
+                String input = scanner.nextLine().trim();
+                if (input.equalsIgnoreCase("y")) {
+                    student.setActive(!student.isActive());
+                    saving();
+                    System.out.println("Student is now " + (student.isActive() ? "active" : "inactive"));
                 } else {
-                    System.out.println("Do you want to change to active? (y or n)?");
-                    String input = scanner.nextLine();
-                    if (input.equals("y")) {
-                        student.setActive(true);
-                        saving();
-                        System.out.println("Student activity is changed to active");
-                    } else if (input.equals("n")) {
-                        System.out.println("Student remains inactive");
-                    } else {
-                        System.out.println("Invalid choice! Please try again");
-                    }
+                    System.out.println("Student status unchanged.");
                 }
-
-                break;
+                return;
             }
         }
-
-        if (!found) {
-            System.out.println("Student ID is incorrect");
-        }
+        System.out.println("Student ID is incorrect");
     }
-
 }

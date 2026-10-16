@@ -12,6 +12,8 @@ public class Student extends Person{
         this.active=active;
     }
 
+    // partial record for request files that only store name and student id;
+    // username/password are placeholders and never used for login
     public Student(String name,String studentId){
         super("Maryam","1111");
         this.name=name;
