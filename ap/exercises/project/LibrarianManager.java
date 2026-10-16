@@ -7,9 +7,9 @@ public class LibrarianManager {
     private List<Librarian> librarians;
     private DataManager dataManager;
 
-    public LibrarianManager(){
+    public LibrarianManager(DataManager dataManager){
         this.librarians=new ArrayList<>();
-        this.dataManager=new DataManager();
+        this.dataManager=dataManager;
     }
 
     public void addLibrarian(String username,String password){

@@ -16,9 +16,9 @@ public class BookManager implements Connection, HandleData, Getter {
     private List<AcceptReturn> acceptReturns;     // every accepted return (history)
     private Scanner scanner;
 
-    public BookManager(Scanner scanner) {
+    public BookManager(Scanner scanner, DataManager dataManager) {
         this.books = new ArrayList<>();
-        this.dataManager = new DataManager();
+        this.dataManager = dataManager;
         this.borrowRequests = new ArrayList<>();
         this.acceptBorrows = new ArrayList<>();
         this.allRequests = new ArrayList<>();

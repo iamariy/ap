@@ -8,9 +8,9 @@ public class StudentManager {
     private List<Student> students;
     private DataManager dataManager;
 
-    public StudentManager() {
+    public StudentManager(DataManager dataManager) {
         this.students = new ArrayList<>();
-        this.dataManager = new DataManager();
+        this.dataManager = dataManager;
     }
 
     public void registerStudent(String name, String studentId, String username, String password) {

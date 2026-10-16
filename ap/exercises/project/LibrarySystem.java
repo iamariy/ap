@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class LibrarySystem implements Connection, HandleData, Getter {
+
+    // Switch to false to store data in plain text files instead of SQLite
+    private static final boolean USE_SQLITE = true;
+
     private StudentManager studentManager;
     private MenuHandler menuHandler;
     private LibrarianManager librarianManager;
@@ -12,9 +16,10 @@ public class LibrarySystem implements Connection, HandleData, Getter {
 
     public LibrarySystem() {
         this.scanner = new Scanner(System.in);
-        this.studentManager = new StudentManager();
-        this.librarianManager = new LibrarianManager();
-        this.bookManager = new BookManager(scanner);
+        DataManager dataManager = USE_SQLITE ? new SqliteDataManager() : new FileDataManager();
+        this.studentManager = new StudentManager(dataManager);
+        this.librarianManager = new LibrarianManager(dataManager);
+        this.bookManager = new BookManager(scanner, dataManager);
         this.menuHandler = new MenuHandler(this, scanner);
     }
 
