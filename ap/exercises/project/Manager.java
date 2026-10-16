@@ -16,3 +16,4 @@ public class Manager extends Person{
                 + " | password: " + getPassword();
     }
 }
+

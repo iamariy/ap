@@ -42,3 +42,4 @@ public class LibrarianManager {
         return librarians.stream().anyMatch(l -> l.getUsername().equals(username));
     }
 }
+
